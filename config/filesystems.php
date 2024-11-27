@@ -38,10 +38,9 @@ return [
 
         'public' => [
             'driver' => 'local',
-            'root' => storage_path('app/public'),
-            'url' => env('APP_URL').'/storage',
+            'root' => public_path('uploads'), // Lokasi folder
+            'url' => env('APP_URL') . '/uploads', // URL akses file
             'visibility' => 'public',
-            'throw' => false,
         ],
 
         's3' => [
