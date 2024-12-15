@@ -26,6 +26,7 @@ return new class extends Migration
             $table->integer('amount_dp');
             $table->string('image_dp');
             $table->enum('role', ['admin', 'user']);
+            $table->enum('aggrement', [true, false]);
             $table->rememberToken();
             $table->timestamps();
             $table->softDeletes();

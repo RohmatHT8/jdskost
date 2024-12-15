@@ -7,6 +7,7 @@ use App\Filament\Resources\BranchResource\RelationManagers;
 use App\Models\Branch;
 use Filament\Forms;
 use Filament\Forms\Form;
+use Filament\Navigation\NavigationGroup;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
@@ -73,8 +74,8 @@ class BranchResource extends Resource
     {
         return [
             'index' => Pages\ListBranches::route('/'),
-            'create' => Pages\CreateBranch::route('/create'),
-            'edit' => Pages\EditBranch::route('/{record}/edit'),
+            // 'create' => Pages\CreateBranch::route('/create'),
+            // 'edit' => Pages\EditBranch::route('/{record}/edit'),
         ];
     }
 }

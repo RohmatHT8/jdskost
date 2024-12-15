@@ -12,7 +12,8 @@ class Payment extends Model
         'no',
         'tf_image',
         'status',
-        'amount'
+        'amount',
+        'note'
     ];
 
     protected $appends = ['anual_payment'];
@@ -25,14 +26,15 @@ class Payment extends Model
     public function getAnualPaymentAttribute()
     {
         $dateIn = UserRoom::where('room_id', $this->roomPayments->pluck('room_id')->first())
-        ->where('status', 'in')
-        ->pluck('created_at')
-        ->first();
-        
+            ->where('status', 'in')
+            ->pluck('created_at')
+            ->first();
+
         $anualDate = (int) \Carbon\Carbon::parse($dateIn)->format('d');
-        if($anualDate > 28) {
+        if ($anualDate > 28) {
             return 28;
         }
+
         return $anualDate;
     }
 

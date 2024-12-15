@@ -30,7 +30,8 @@ class User extends Authenticatable
         'long_stay',
         'amount_dp',
         'image_dp',
-        'role'
+        'role',
+        'aggrement'
     ];
 
     /**

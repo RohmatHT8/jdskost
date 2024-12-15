@@ -1,6 +1,6 @@
 <nav class="p-5 md:px-20 lg:px-32 w-full flex justify-between bg-white fixed z-50 top-0 shadow-md">
-    <div class="flex gap-3">
-        <a href="/" class="font-bold text-2xl text-gray-800">JDS <span class="text-green-600">KOST</span></a>
+    <div class="flex gap-3 items-center">
+        <a href="/"><img src="{{asset('assets/logo.png')}}" class="h-6 mx-auto"  alt="logo"/></a>
     </div>
     <div class="flex gap-3">
         <!-- Ikon User -->

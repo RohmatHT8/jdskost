@@ -22,6 +22,11 @@ class Room extends Model
         return $this->belongsTo(Branch::class);
     }
 
+    public function payments()
+    {
+        return $this->belongsToMany(Payment::class, 'room_payments');
+    }
+
     public function status()
     {
         $available = Room::selectRaw('
@@ -40,11 +45,16 @@ class Room extends Model
             return $available->status;
         }
 
+        if ($this->hasNoPayments()) {
+            return 'unpaid';
+        }
+
         $payment = Payment::whereHas('roomPayments.room', function ($query) {
             $query->where('id', $this->id);
         })
             ->with(['roomPayments.room'])
             ->first();
+
         $appendsData = collect($payment->toArray())->only($payment->getAppends());
         // Log::info($appendsData['anual_payment']);
         $longPayment = RoomPayment::where('room_id', $this->id)
@@ -99,5 +109,15 @@ class Room extends Model
     {
         // Mengambil hari ini dan mengembalikannya dalam format angka
         return (int) Carbon::now()->format('d');
+    }
+
+    public function userRooms()
+    {
+        return $this->hasMany(UserRoom::class);
+    }
+
+    public function hasNoPayments(): bool
+    {
+        return $this->payments()->doesntExist();
     }
 }

@@ -13,10 +13,11 @@ class Detail extends Component
 {
     public $param;
     public $room;
-
     public $payment;
-
+    public $userDetail;
+    public $paymentDetail;
     public $isHidden = 'hidden';
+    public $isHiddenDetail = 'hidden';
 
     public function mount($param = null)
     {
@@ -44,6 +45,12 @@ class Detail extends Component
                     'created_at' => $room->latestPayment?->created_at,
                 ];
             });
+    }
+
+    public function getPaymentIdDetail($id)
+    {
+        $this->paymentDetail = Payment::find($id);
+        $this->isHiddenDetail = '';
     }
 
     public function showModal()
@@ -89,8 +96,14 @@ class Detail extends Component
         session()->flash('message', 'Pembayaran telah ditolak!');
     }
 
-    public function closeModal(){
+    public function closeModal()
+    {
         return $this->isHidden = 'hidden';
+    }
+
+    public function closeModalDetail()
+    {
+        return $this->isHiddenDetail = 'hidden';
     }
 
     public function sendBill()
@@ -112,11 +125,23 @@ class Detail extends Component
     public function render()
     {
         $this->room = Room::with('branch', 'roomPayments')->where('id', $this->param)->get()->first();
-        $paymentDetails = Payment::join('room_payments as rp', 'rp.payment_id', '=', 'payments.id')
+
+        // $this->userDetail = Room::select('rooms.*', 'users.*')
+        //     ->leftJoin(DB::raw('(SELECT room_id, MAX(created_at) AS latest_created_at FROM user_rooms GROUP BY room_id) AS latest_user_rooms'), 'rooms.id', '=', 'latest_user_rooms.room_id')
+        //     ->leftJoin('user_rooms', function ($join) {
+        //         $join->on('user_rooms.room_id', '=', 'latest_user_rooms.room_id')
+        //             ->on('user_rooms.created_at', '=', 'latest_user_rooms.latest_created_at');
+        //     })
+        //     ->leftJoin('users', 'users.id', '=', 'user_rooms.user_id')
+        //     ->where('rooms.id', $this->param)
+        //     ->first();
+        $paymentDetails = DB::table('room_payments as rp')
+            ->join('payments as p', 'p.id', '=', 'rp.payment_id')
             ->where('rp.room_id', $this->room->id)
-            ->orderBy('payments.created_at', 'desc')
-            ->limit(10)
+            ->orderBy('p.created_at', 'desc') // Urutkan berdasarkan created_at (terbaru)
+            ->select('rp.*', 'p.*')
             ->get();
-        return view('livewire.detail', ['room' => $this->room, 'paymentDetails' => $paymentDetails]);
+        // dd($paymentDetails);
+        return view('livewire.detail', ['roomView' => $this->room, 'paymentDetails' => $paymentDetails, 'userDetailView' => $this->userDetail]);
     }
 }

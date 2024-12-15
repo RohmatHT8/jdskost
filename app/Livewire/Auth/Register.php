@@ -2,6 +2,7 @@
 
 namespace App\Livewire\Auth;
 
+use App\Models\Branch;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
@@ -9,6 +10,7 @@ use App\Models\Room;
 use App\Models\UserRoom;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Validation\Rule;
+use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithFileUploads;
 
@@ -28,10 +30,15 @@ class Register extends Component
     public $image_dp;
     public $role = 'user';
     public $room_id;
+    public $status;
+    public $branch_id;
+    public $date_in;
+    public $aggrement;
 
     public function save()
     {
         // Validasi data termasuk validasi gambar
+        // dd($this->aggrement);
         $this->validate([
             'name' => 'required|max:255',
             'email' => 'required|email|unique:users|max:255',
@@ -44,7 +51,11 @@ class Register extends Component
             'amount_dp' => 'required|integer',
             'image_dp' => 'required|image|mimes:jpg,jpeg,png,gif|max:2048',
             'role' => 'required|in:admin,user',
-            'room_id' => 'required|exists:rooms,id'
+            'room_id' => 'required|exists:rooms,id',
+            'status' => 'required|string',
+            'branch_id' => 'required|integer',
+            'date_in' => 'required|string',
+            'aggrement' => 'accepted'
         ]);
 
         // Mengupload gambar dan menyimpan path-nya
@@ -70,12 +81,14 @@ class Register extends Component
             'amount_dp' => $this->amount_dp,
             'image_dp' => $dp,
             'role' => $this->role,
+            'aggrement' => $this->aggrement,
         ]);
 
         UserRoom::create([
             'user_id' => $user->id,
             'room_id' => $this->room_id,
-            'status' => 'in',
+            'status' => $this->status,
+            'date_in' => $this->date_in
         ]);
 
         auth()->login($user);
@@ -89,17 +102,24 @@ class Register extends Component
 
     public function render()
     {
-        $rooms = Room::leftJoin('user_rooms as ur', 'rooms.id', '=', 'ur.room_id')
-            ->where(function ($query) {
-                $query->whereRaw('ur.created_at = (SELECT MAX(created_at) FROM user_rooms sub_ur WHERE sub_ur.user_id = ur.user_id)')
-                    ->orWhereNull('ur.created_at');
-            })
-            ->where(function ($query) {
-                $query->where('ur.status', '!=', 'in')
-                    ->orWhereNull('ur.status');
-            })
-            ->select('rooms.*')
-            ->get();
-        return view('livewire.auth.register', ['rooms' => $rooms]);
+        $rooms = [];
+        $branches = Branch::get()->all();
+        if ($this->branch_id && $this->status === 'in') {
+            $rooms = Room::leftJoin('user_rooms as ur', 'rooms.id', '=', 'ur.room_id')
+                ->where(function ($query) {
+                    $query->whereRaw('ur.created_at = (SELECT MAX(created_at) FROM user_rooms sub_ur WHERE sub_ur.user_id = ur.user_id)')
+                        ->orWhereNull('ur.created_at');
+                })
+                ->where(function ($query) {
+                    $query->where('ur.status', '!=', 'in')
+                        ->orWhereNull('ur.status');
+                })
+                ->where('rooms.branch_id',$this->branch_id)
+                ->select('rooms.*')
+                ->get();
+        } else if ($this->branch_id && $this->status === 'book') {
+            $rooms=Room::where('branch_id',$this->branch_id)->get();
+        }
+        return view('livewire.auth.register', compact('rooms', 'branches'));
     }
 }

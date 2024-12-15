@@ -6,11 +6,16 @@ use App\Filament\Resources\RoomResource\Pages;
 use App\Filament\Resources\RoomResource\RelationManagers;
 use App\Models\Room;
 use Filament\Forms;
+use Filament\Forms\Components\Group;
+use Filament\Forms\Components\Repeater;
+use Filament\Forms\Components\Section;
+use Filament\Forms\Components\Select;
 use Filament\Forms\Form;
 use Filament\Resources\Resource;
 use Filament\Tables;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
 class RoomResource extends Resource
@@ -23,25 +28,27 @@ class RoomResource extends Resource
     {
         return $form
             ->schema([
-                Forms\Components\TextInput::make('number_room')
-                    ->required()
-                    ->maxLength(255),
-                Forms\Components\FileUpload::make('image_room')
-                    ->image()
-                    ->required(),
-                Forms\Components\Select::make('branch_id')
-                    ->relationship('branch', 'name')
-                    ->label('Branch')
-                    ->searchable()
-                    ->preload()
-                    ->required()
-                    ->distinct()
-                    ->disableOptionsWhenSelectedInSiblingRepeaterItems(),
-                Forms\Components\TextInput::make('price')
-                    ->required()
-                    ->numeric()
-                    ->prefix('$'),
-            ]);
+                Group::make()->schema([
+                    Forms\Components\TextInput::make('number_room')
+                        ->required()
+                        ->maxLength(255),
+                    Forms\Components\Select::make('branch_id')
+                        ->relationship('branch', 'name')
+                        ->label('Branch')
+                        ->searchable()
+                        ->preload()
+                        ->required()
+                        ->distinct()
+                        ->disableOptionsWhenSelectedInSiblingRepeaterItems(),
+                    Forms\Components\TextInput::make('price')
+                        ->required()
+                        ->numeric()
+                        ->prefix('Rp'),
+                    Forms\Components\FileUpload::make('image_room')
+                        ->image()
+                        ->required(),
+                ])->columns(2)
+            ])->columns(1);
     }
 
     public static function table(Table $table): Table
@@ -56,7 +63,7 @@ class RoomResource extends Resource
                     ->searchable()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('price')
-                    ->money()
+                    ->money('idr', true)
                     ->sortable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()
@@ -72,6 +79,7 @@ class RoomResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([
@@ -91,8 +99,8 @@ class RoomResource extends Resource
     {
         return [
             'index' => Pages\ListRooms::route('/'),
-            'create' => Pages\CreateRoom::route('/create'),
-            'edit' => Pages\EditRoom::route('/{record}/edit'),
+            // 'create' => Pages\CreateRoom::route('/create'),
+            // 'edit' => Pages\EditRoom::route('/{record}/edit'),
         ];
     }
 }

@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('tf_image');
             $table->integer('amount');
             $table->enum('status', ['unpaid', 'rejected', 'approve', 'waiting_proccess', 'billing_proccess']);
+            $table->longText('note')->nullable();
             $table->timestamps();
         });
     }

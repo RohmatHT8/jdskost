@@ -16,12 +16,10 @@ use Livewire\WithFileUploads;
 class Homepage extends Component
 {
     use WithFileUploads;
-    public $detail;
     public $room_id;
-    public $room;
-    public $payment;
     public $amount;
     public $tf_image;
+    public $note;
 
     public function savePayment()
     {
@@ -37,12 +35,14 @@ class Homepage extends Component
             'no' => $invoiceNumber,
             'amount' => $this->amount,
             'tf_image' => $image,
+            'note' => $this->note,
             'status' => 'waiting_proccess'
         ]);
 
         RoomPayment::create([
             'room_id' => $this->room_id,
-            'payment_id' => $payment->id
+            'payment_id' => $payment->id,
+            'user_id' => Auth::user()->id,
         ]);
 
         session()->flash('message', 'Payment has been successfully saved!');
@@ -60,7 +60,7 @@ class Homepage extends Component
     public function render()
     {
         if (Auth::user()->role === 'user') {
-            $this->detail = User::join('user_rooms as ur', 'ur.user_id', '=', 'users.id')
+            $detail = User::join('user_rooms as ur', 'ur.user_id', '=', 'users.id')
                 ->join('rooms as r', 'r.id', '=', 'ur.room_id')
                 ->leftJoin('room_payments as rp', 'rp.room_id', '=', 'r.id')
                 ->leftJoin('payments as p', 'p.id', '=', 'rp.payment_id')
@@ -95,20 +95,21 @@ class Homepage extends Component
                 ->limit(1)
                 ->first();
             // dd(json_decode(json_encode($this->detail), true));
-            $this->room_id = $this->detail->room_id;
-            $this->payment = DB::table('room_payments as rp')
+            $this->room_id = $detail->room_id;
+            $payments = DB::table('room_payments as rp')
                 ->join('payments as p', 'p.id', '=', 'rp.payment_id')
-                ->where('rp.room_id', $this->detail->room_id)
+                ->where('rp.room_id', $detail->room_id)
                 ->orderBy('p.created_at', 'desc') // Urutkan berdasarkan created_at (terbaru)
                 ->select('rp.*', 'p.*')
                 ->get();
-            // dd(['payments' => json_decode(json_encode($this->payment), true)]);
+            // dd($payments);
+            return view('livewire.homepage', compact('detail', 'payments'));
         };
         if (Auth::user()->role === 'admin') {
-            $this->room = Room::with('branch')->get()->all();
+            $rooms = Room::with('branch')->get()->all();
             // dd(['detail' => $this->room]);
+            return view('livewire.homepage', compact('rooms'));
         }
-        return view('livewire.homepage', ['detail' => $this->detail, 'rooms' => $this->room, 'payments' => $this->payment]);
     }
 
     function generateInvoiceNumber()

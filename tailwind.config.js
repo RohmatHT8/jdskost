@@ -7,7 +7,15 @@ export default {
     'node_modules/preline/dist/*.js',
   ],
   theme: {
-    extend: {},
+    extend: {
+      fontFamily: {
+        inter: ["Inter", "sans-serif"],
+      },
+      colors: {
+        primary: ['#424d53'],
+        lightPrimary: ['#293338'],
+      }
+    },
   },
   plugins: [
     require('preline/plugin'),

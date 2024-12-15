@@ -11,6 +11,7 @@ class RoomPayment extends Model
     protected $fillable = [
         'room_id',
         'payment_id',
+        'user_id'
     ];
 
     public function room()
@@ -21,5 +22,9 @@ class RoomPayment extends Model
     public function payment()
     {
         return $this->belongsTo(Payment::class);
+    }
+
+    public function user(){
+        return $this->belongsTo(User::class);
     }
 }

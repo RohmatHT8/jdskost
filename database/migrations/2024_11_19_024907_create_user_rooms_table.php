@@ -15,7 +15,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
             $table->foreignId('room_id')->constrained('rooms')->cascadeOnDelete();
-            $table->enum('status', ['in', 'out'])->default('in');
+            $table->date('date_in');
+            $table->enum('status', ['in', 'out', 'book'])->default('in');
             $table->timestamps();
         });
     }
