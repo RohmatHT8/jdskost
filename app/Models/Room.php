@@ -37,7 +37,7 @@ class Room extends Model
                 END AS status
             ')
             ->leftJoin('user_rooms', 'user_rooms.room_id', '=', 'rooms.id')
-            ->groupBy('rooms.id')
+            ->groupBy('rooms.id', 'user_rooms.room_id')
             ->where('rooms.id', $this->id)
             ->first();
 
