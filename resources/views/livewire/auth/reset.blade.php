@@ -29,7 +29,7 @@
                             <div class="grid gap-y-4">
                                 <!-- Form Group -->
                                 <div>
-                                    <label for="password" class="block text-sm mb-2 dark:text-white">Password</label>
+                                    <label for="password" class="block text-sm mb-2">Password</label>
                                     <div class="relative">
                                         <input wire:model="password" type="password" id="password" name="password"
                                             class="form" placeholder="Password" required aria-describedby="password-error">
@@ -51,7 +51,7 @@
                                 <!-- End Form Group -->
                                 <!-- Form Group -->
                                 <div>
-                                    <label for="password_confirmation" class="block text-sm mb-2 dark:text-white">Password Confirmation</label>
+                                    <label for="password_confirmation" class="block text-sm mb-2">Password Confirmation</label>
                                     <div class="relative">
                                         <input wire:model="password_confirmation" type="password" id="password_confirmation" name="password_confirmation"
                                             class="form" placeholder="Password Confirmation" required aria-describedby="password_confirmation-error">

@@ -28,7 +28,7 @@
                             <div class="grid gap-y-4">
                                 <!-- Form Group -->
                                 <div>
-                                    <label for="email" class="block text-sm mb-2 dark:text-white">Email</label>
+                                    <label for="email" class="block text-sm mb-2">Email</label>
                                     <div class="relative">
                                         <input wire:model="email" type="email" id="email" name="email"
                                             class="form" aria-describedby="email-error"
@@ -54,7 +54,7 @@
                                 <div>
                                     <div class="flex justify-between items-center">
                                         <label for="password"
-                                            class="block text-sm mb-2 dark:text-white">Password</label>
+                                            class="block text-sm mb-2">Password</label>
                                         <a class="text-sm text-primary-0 hover:text-lightPrimary-0 decoration-2 hover:underline font-medium dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600"
                                             href="/forgot">Lupa Password?</a>
                                     </div>

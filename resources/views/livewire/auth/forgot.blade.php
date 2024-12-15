@@ -29,7 +29,7 @@
                             <div class="grid gap-y-4">
                                 <!-- Form Group -->
                                 <div>
-                                    <label for="email" class="block text-sm mb-2 dark:text-white">Email</label>
+                                    <label for="email" class="block text-sm mb-2">Email</label>
                                     <div class="relative">
                                         <input wire:model="email" type="email" id="email" name="email"
                                             class="form" placeholder="Email" required aria-describedby="email-error">

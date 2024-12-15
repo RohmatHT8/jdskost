@@ -27,7 +27,7 @@
                             <div class="grid gap-y-4">
                                 <!-- Form Group -->
                                 <div>
-                                    <label for="name" class="block text-sm mb-2 dark:text-white">Nama Lengkap
+                                    <label for="name" class="block text-sm mb-2">Nama Lengkap
                                         (sesuai KTP)<span class="text-red-600">*</span></label>
                                     <div class="relative">
                                         <input wire:model="name" type="text" id="name" name="name"
@@ -50,7 +50,7 @@
                                 <!-- End Form Group -->
                                 <!-- Form Group -->
                                 <div>
-                                    <label for="email" class="block text-sm mb-2 dark:text-white">Email</label>
+                                    <label for="email" class="block text-sm mb-2">Email</label>
                                     <div class="relative">
                                         <input wire:model="email" type="email" id="email" name="email"
                                             class="form" aria-describedby="email-error"
@@ -73,7 +73,7 @@
                                 <!-- End Form Group -->
                                 <!-- Form Group -->
                                 <div>
-                                    <label for="job" class="block text-sm mb-2 dark:text-white">Pekerjaan</label>
+                                    <label for="job" class="block text-sm mb-2">Pekerjaan</label>
                                     <div class="relative">
                                         <input wire:model="job" type="text" id="job" name="job"
                                             class="form" aria-describedby="job-error" placeholder="Pekerjaan">
@@ -96,7 +96,7 @@
                                 <!-- Form Group -->
                                 <div class="flex justify-between gap-1">
                                     <div class="w-full">
-                                        <label for="branch_id" class="block text-sm mb-2 dark:text-white">Cabang<span
+                                        <label for="branch_id" class="block text-sm mb-2">Cabang<span
                                                 class="text-red-600">*</span></label>
                                         <div class="relative">
                                             <select wire:model.live="branch_id" id="branch_id" name="branch_id"
@@ -122,7 +122,7 @@
                                         @enderror
                                     </div>
                                     <div class="w-full">
-                                        <label for="status" class="block text-sm mb-2 dark:text-white">Peruntukan<span
+                                        <label for="status" class="block text-sm mb-2">Peruntukan<span
                                                 class="text-red-600">*</span></label>
                                         <div class="relative">
                                             <select wire:model.live="status" id="status" name="status"
@@ -148,7 +148,7 @@
                                     </div>
                                 </div>
                                 <div class="{{ $branch_id && $status ? '' : 'hidden' }}">
-                                    <label for="room_id" class="block text-sm mb-2 dark:text-white">Nomor
+                                    <label for="room_id" class="block text-sm mb-2">Nomor
                                         Ruangan<span class="text-red-600">*</span></label>
                                     <div class="relative">
                                         <select wire:model="room_id" id="room_id" name="room_id" class="form">
@@ -174,7 +174,7 @@
                                 </div>
                                 <div class="flex justify-between gap-2">
                                     <div class="w-full">
-                                        <label for="date_in" class="block text-sm mb-2 dark:text-white">Tanggal
+                                        <label for="date_in" class="block text-sm mb-2">Tanggal
                                             Masuk<span class="text-red-600">*</span></label>
                                         <div class="relative">
                                             <input wire:model="date_in" type="date" id="date_in" name="date_in"
@@ -200,7 +200,7 @@
 
                                 <!-- Form Group -->
                                 <div>
-                                    <label for="image_ktp" class="block text-sm mb-2 dark:text-white">KTP Image<span
+                                    <label for="image_ktp" class="block text-sm mb-2">KTP Image<span
                                             class="text-red-600">*</span></label>
                                     <div class="relative" id='statusMessage'>
                                         <input wire:model="image_ktp" class="form" type="file" accept="image/*"
@@ -224,7 +224,7 @@
 
                                 <!-- Form Group -->
                                 <div>
-                                    <label for="phone_number" class="block text-sm mb-2 dark:text-white">Nomor WA<span
+                                    <label for="phone_number" class="block text-sm mb-2">Nomor WA<span
                                             class="text-red-600">*</span></label>
                                     <div class="relative">
                                         <input wire:model="phone_number" type="text" id="phone_number"
@@ -249,7 +249,7 @@
 
                                 <!-- Form Group -->
                                 <div>
-                                    <label for="emergency_phone" class="block text-sm mb-2 dark:text-white">Nama Dan
+                                    <label for="emergency_phone" class="block text-sm mb-2">Nama Dan
                                         Nomor Telepon Darurat<span class="text-red-600">*</span></label>
                                     <div class="relative">
                                         <input wire:model="emergency_phone" type="text" id="emergency_phone"
@@ -275,7 +275,7 @@
 
                                 <!-- Form Group -->
                                 <div>
-                                    <label for="image_selfie" class="block text-sm mb-2 dark:text-white">Swafoto (Foto
+                                    <label for="image_selfie" class="block text-sm mb-2">Swafoto (Foto
                                         Selfie)<span class="text-red-600">*</span></label>
                                     <div class="relative">
                                         <input wire:model="image_selfie" type="file" accept="image/*"
@@ -300,7 +300,7 @@
 
                                 <!-- Form Group -->
                                 {{-- <div>
-                                    <label for="date_check_in" class="block text-sm mb-2 dark:text-white">Tanggal
+                                    <label for="date_check_in" class="block text-sm mb-2">Tanggal
                                         Masuk<span class="text-red-600">*</span></label>
                                     <div class="relative">
                                         <input wire:model="date_check_in" type="date" id="date_check_in"
@@ -325,7 +325,7 @@
 
                                 <!-- Form Group -->
                                 <div>
-                                    <label for="long_stay" class="block text-sm mb-2 dark:text-white">Saya Akan
+                                    <label for="long_stay" class="block text-sm mb-2">Saya Akan
                                         Tinggal
                                         di JDS Kost untuk waktu<span class="text-red-600">*</span></label>
                                     <div class="relative">
@@ -356,7 +356,7 @@
 
                                 <!-- Form Group -->
                                 <div>
-                                    <label for="amount_dp" class="block text-sm mb-2 dark:text-white">Jumlah Dp <span
+                                    <label for="amount_dp" class="block text-sm mb-2">Jumlah Dp <span
                                             class="text-red-600">*</span></label>
                                     <div class="relative">
                                         <input wire:model="amount_dp" type="number" id="amount_dp" name="amount_dp"
@@ -381,7 +381,7 @@
 
                                 <!-- Form Group -->
                                 <div>
-                                    <label for="image_dp" class="block text-sm mb-2 dark:text-white">Upload Bukti
+                                    <label for="image_dp" class="block text-sm mb-2">Upload Bukti
                                         Transfer Deposit<span class="text-red-600">*</span></label>
                                     <div class="relative">
                                         <input wire:model="image_dp" type="file" accept="image/*" id="image_dp"

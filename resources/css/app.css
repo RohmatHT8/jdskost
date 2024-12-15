@@ -3,5 +3,5 @@
 @tailwind utilities;
 
 .form {
-    @apply py-3 px-4 block w-full border border-gray-200 text-sm focus:border-primary-0 focus:ring-primary-0 focus:outline-primary-0 active:border-primary-0 active:ring-primary-0 disabled:opacity-50 disabled:pointer-events-none
+    @apply py-3 px-4 block w-full border border-gray-200 text-sm focus:border-primary-0 focus:ring-primary-0 focus:outline-primary-0 active:border-primary-0 active:ring-primary-0 disabled:opacity-50 disabled:pointer-events-none rounded-none
 }
