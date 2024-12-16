@@ -9,7 +9,7 @@
                         d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
                 </svg>
                 <input type="text"
-                    class="text-xs w-60 pl-8 pr-3 py-2 border border-gray-300 focus:outline-none focus:border-green-600 focus:ring-1 focus:ring-green-600"
+                    class="text-xs w-60 pl-8 pr-3 py-2 border border-gray-300 focus:outline-none focus:border-primary-0 focus:ring-1 focus:ring-lightPrimary-0"
                     placeholder="Search" />
             </div>
         @endif
@@ -57,7 +57,7 @@
                     <input type="checkbox" class="mr-2"> Available
                 </label>
             </div>
-            <button class="mt-4 w-full bg-green-600 text-white text-center py-2 rounded-md">Apply</button>
+            <button class="mt-4 w-full bg-primary-0 hover:bg-lightPrimary-0 text-white text-center py-2">Apply</button>
         </div>
     </div>
     <!-- User Profile Pop-Up -->
