@@ -175,7 +175,7 @@
                                 $detail->status_payment == 'rejected')
                             <form wire:submit.prevent="savePayment">
                                 <div class="mb-3">
-                                    <label for="amount" class="block text-sm mb-2 dark:text-white">Jumlah
+                                    <label for="amount" class="block text-sm mb-2">Jumlah
                                         Pembayaran<span class="text-red-600">*</span></label>
                                     <div class="relative">
                                         <input wire:model="amount" type="number" id="amount" name="amount"
@@ -196,7 +196,7 @@
                                     @enderror
                                 </div>
                                 <div class="mb-3">
-                                    <label for="tf_image" class="block text-sm mb-2 dark:text-white">Upload Bukti
+                                    <label for="tf_image" class="block text-sm mb-2">Upload Bukti
                                         Transfer<span class="text-red-600">*</span></label>
                                     <div class="relative">
                                         <input wire:model="tf_image" type="file" id="tf_image" name="tf_image"
@@ -218,7 +218,7 @@
                                     @enderror
                                 </div>
                                 <div class="mb-3">
-                                    <label for="note" class="block text-sm mb-2 dark:text-white">Catatan</label>
+                                    <label for="note" class="block text-sm mb-2">Catatan</label>
                                     <div class="relative">
                                         <textarea wire:model="note"  id="note" name="note"
                                             class="form bg-white rounded-md" aria-describedby="note-error" placeholder="Catatan"></textarea>
