@@ -4,7 +4,7 @@
     </div>
     <div class="flex gap-3">
         <!-- Ikon User -->
-        <svg id="userIcon" class="w-6 h-6 text-gray-800 hover:text-gray-500 cursor-pointer dark:text-white"
+        <svg id="userIcon" class="w-6 h-6 text-gray-800 hover:text-gray-500 cursor-pointer"
             aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
             viewBox="0 0 24 24">
             <path fill-rule="evenodd"
