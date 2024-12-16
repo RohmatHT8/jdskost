@@ -148,7 +148,7 @@
                         </div>
                         <hr class="my-2" />
                         @if ($userDetailView)
-                            <div class="mx-auto h-32 w-32 rounded-full overflow-hidden">
+                            <div class="mx-auto h-20 w-20 rounded-full overflow-hidden shadow-md">
                                 <img src="{{ url('uploads', $userDetailView->image_selfie) }}" />
                             </div>
                             <table class="w-full text-slate-500">
