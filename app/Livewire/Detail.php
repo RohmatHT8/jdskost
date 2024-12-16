@@ -21,6 +21,7 @@ class Detail extends Component
     public $paymentDetail;
     public $isHidden = 'hidden';
     public $isHiddenDetail = 'hidden';
+    public $userId;
 
     public function mount($param = null)
     {
@@ -73,7 +74,8 @@ class Detail extends Component
 
         RoomPayment::create([
             'room_id' => $this->room->id,
-            'payment_id' => $payment->id
+            'payment_id' => $payment->id,
+            'user_id' => $this->userId
         ]);
 
         $this->isHidden = 'hidden';
@@ -92,7 +94,8 @@ class Detail extends Component
 
         RoomPayment::create([
             'room_id' => $this->room->id,
-            'payment_id' => $payment->id
+            'payment_id' => $payment->id,
+            'user_id' => $this->userId
         ]);
 
         $this->closeModal();
@@ -120,7 +123,8 @@ class Detail extends Component
 
         RoomPayment::create([
             'room_id' => $this->room->id,
-            'payment_id' => $payment->id
+            'payment_id' => $payment->id,
+            'user_id' => $this->userId
         ]);
         session()->flash('message', 'Bill sudah terkirim');
     }
@@ -129,7 +133,7 @@ class Detail extends Component
     {
 
         $this->room = Room::with('branch', 'roomPayments')->where('id', $this->param)->get()->first();
-        $userId = DB::table('user_rooms')
+        $this->userId = DB::table('user_rooms')
             ->select(DB::raw("
                 CASE 
                     WHEN status = 'out' THEN NULL
@@ -144,11 +148,11 @@ class Detail extends Component
             ->join('payments as p', 'p.id', '=', 'rp.payment_id')
             ->join('user_rooms as ur', 'ur.room_id', '=', 'rp.room_id')
             ->where('rp.room_id', $this->room->id)
-            ->where('ur.user_id', $userId)
+            ->where('ur.user_id', $this->userId)
             ->orderBy('p.created_at', 'desc') // Urutkan berdasarkan created_at (terbaru)
             ->select('rp.*', 'p.*')
             ->get();
-        $this->userDetail = User::find($userId);
+        $this->userDetail = User::find($this->userId);
         return view('livewire.detail', ['roomView' => $this->room, 'paymentDetails' => $paymentDetails, 'userDetailView' => $this->userDetail]);
     }
 }
