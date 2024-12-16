@@ -5,9 +5,12 @@ namespace App\Livewire;
 use App\Models\Payment;
 use App\Models\Room;
 use App\Models\RoomPayment;
+use App\Models\User;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use Livewire\Component;
+
+use function Laravel\Prompts\select;
 
 class Detail extends Component
 {
@@ -124,24 +127,28 @@ class Detail extends Component
 
     public function render()
     {
-        $this->room = Room::with('branch', 'roomPayments')->where('id', $this->param)->get()->first();
 
-        // $this->userDetail = Room::select('rooms.*', 'users.*')
-        //     ->leftJoin(DB::raw('(SELECT room_id, MAX(created_at) AS latest_created_at FROM user_rooms GROUP BY room_id) AS latest_user_rooms'), 'rooms.id', '=', 'latest_user_rooms.room_id')
-        //     ->leftJoin('user_rooms', function ($join) {
-        //         $join->on('user_rooms.room_id', '=', 'latest_user_rooms.room_id')
-        //             ->on('user_rooms.created_at', '=', 'latest_user_rooms.latest_created_at');
-        //     })
-        //     ->leftJoin('users', 'users.id', '=', 'user_rooms.user_id')
-        //     ->where('rooms.id', $this->param)
-        //     ->first();
+        $this->room = Room::with('branch', 'roomPayments')->where('id', $this->param)->get()->first();
+        $userId = DB::table('user_rooms')
+            ->select(DB::raw("
+                CASE 
+                    WHEN status = 'out' THEN NULL
+                    ELSE user_id
+                END AS result
+            "))
+            ->where('room_id', $this->room->id)
+            ->orderBy('created_at', 'desc')
+            ->limit(1)
+            ->value('user_id');
         $paymentDetails = DB::table('room_payments as rp')
             ->join('payments as p', 'p.id', '=', 'rp.payment_id')
+            ->join('user_rooms as ur', 'ur.room_id', '=', 'rp.room_id')
             ->where('rp.room_id', $this->room->id)
+            ->where('ur.user_id', $userId)
             ->orderBy('p.created_at', 'desc') // Urutkan berdasarkan created_at (terbaru)
             ->select('rp.*', 'p.*')
             ->get();
-        // dd($paymentDetails);
+        $this->userDetail = User::find($userId);
         return view('livewire.detail', ['roomView' => $this->room, 'paymentDetails' => $paymentDetails, 'userDetailView' => $this->userDetail]);
     }
 }

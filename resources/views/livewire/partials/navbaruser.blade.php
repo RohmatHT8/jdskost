@@ -33,7 +33,6 @@
 
 <script>
     userIcon.addEventListener('click', () => {
-        console.log('masuk')
         userMenu.classList.toggle('hidden');
     });
 </script>

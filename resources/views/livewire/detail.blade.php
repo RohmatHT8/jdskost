@@ -2,8 +2,7 @@
     {{-- Modal Approve --}}
     <div class="{{ $isHidden }} absolute h-screen -top-4 right-0 left-0 z-[99] bg-[rgba(0,0,0,0.5)]">
         <div class="sm:max-w-lg sm:w-full m-3 sm:mx-auto">
-            <div
-                class="flex flex-col bg-white border shadow-sm pointer-events-auto mt-24">
+            <div class="flex flex-col bg-white border shadow-sm pointer-events-auto mt-24">
                 <div class="flex justify-between items-center py-3 px-4 border-b ">
                     <h3 id="hs-basic-modal-label" class="font-bold text-gray-800  text-xl">
                         Approve
@@ -62,10 +61,8 @@
     {{-- Modal Detail --}}
     <div class="{{ $isHiddenDetail }} fixed h-screen -top-3 right-0 left-0 z-[99] bg-[rgba(0,0,0,0.5)]">
         <div class="sm:max-w-lg sm:w-full m-3 sm:mx-auto">
-            <div
-                class="flex flex-col bg-white border shadow-sm pointer-events-auto mt-24">
-                <div
-                    class="bg-primary-0 flex justify-between items-center py-3 px-4 border-b relative">
+            <div class="flex flex-col bg-white border shadow-sm pointer-events-auto mt-24">
+                <div class="bg-primary-0 flex justify-between items-center py-3 px-4 border-b relative">
                     <h3 id="hs-basic-modal-label" class="font-bold text-white text-xl">
                         Detail
                     </h3>
@@ -133,8 +130,7 @@
                     <p class="text-xs font-semibold text-white">{{ $roomView->branch->name }}</p>
                     <h1 class="text-md font-semibold text-white">{{ formatRupiah($roomView->price) }}</h1>
                     @if ($roomView->status() == 'unpaid' || $roomView->status() == 'rejected')
-                        <button type="button" wire:click="sendBill" wire:loading.attr="disabled"
-                            wire:target="sendBill"
+                        <button type="button" wire:click="sendBill" wire:loading.attr="disabled" wire:target="sendBill"
                             class="px-3 py-1 text-sm mt-3 font-semibold text-white bg-yellow-500 hover:bg-yellow-600">Send
                             Bill</button>
                     @endif
@@ -151,7 +147,10 @@
                             <h1 class="text-lg font-bold text-grey-600">Data Diri</h1>
                         </div>
                         <hr class="my-2" />
-                        {{-- @if ($userDetailView->name)
+                        @if ($userDetailView)
+                            <div class="mx-auto h-32 w-32 rounded-full overflow-hidden">
+                                <img src="{{ url('uploads', $userDetailView->image_selfie) }}" />
+                            </div>
                             <table class="w-full text-slate-500">
                                 <tr>
                                     <td class="py-1">Nama Lengkap</td>
@@ -175,7 +174,8 @@
                                 </tr>
                                 <tr>
                                     <td class="py-1">DP</td>
-                                    <td class="font-semibold">{{ Number::currency($userDetailView->amount_dp, 'IDR') }}
+                                    <td class="font-semibold">
+                                        {{ Number::currency($userDetailView->amount_dp, 'IDR') }}
                                     </td>
                                 </tr>
                                 <tr>
@@ -184,9 +184,9 @@
                                         {{ $userDetailView->long_stay }}</tD>
                                 </tr>
                             </table>
-                        @else --}}
-                            {{-- <p>Kamar Masih Kosong</p>
-                        @endif --}}
+                        @else
+                            <p>Kamar Masih Kosong</p>
+                        @endif
                     </div>
                 </div>
             </div>
