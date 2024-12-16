@@ -1,4 +1,4 @@
-<nav class="p-5 md:px-20 lg:px-32 w-full flex justify-between bg-white fixed z-50 top-0 shadow-md">
+<nav class="p-5 md:px-20 lg:px-32 w-full flex justify-between bg-white fixed z-50 top-0 shadow-md gap-3">
     <div class="flex gap-3 items-center">
         <a href="/"><img src="{{asset('assets/logo.png')}}" class="h-6 mx-auto"  alt="logo"/></a>
         @if (auth()->user()->role === 'admin')
