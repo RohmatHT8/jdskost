@@ -79,7 +79,7 @@ class Room extends Model
                         ->whereColumn('rp2.room_id', 'rooms.id');
                 });
             })
-            ->groupBy('rooms.id', 'payments.id')
+            ->groupBy('rooms.id', 'payments.id', 'payments.status')
             ->first();
         return $status->payment_status;
     }
