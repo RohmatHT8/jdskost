@@ -1,6 +1,6 @@
 <nav class="p-5 md:px-20 lg:px-32 w-full flex justify-between bg-white fixed z-50 top-0 shadow-md gap-3">
     <div class="flex gap-3 items-center">
-        <a href="/"><img src="{{asset('assets/logo.png')}}" class="h-6 mx-auto"  alt="logo"/></a>
+        <a href="/"><img src="{{ asset('assets/logo.png') }}" class="h-6 mx-auto" alt="logo" /></a>
         @if (auth()->user()->role === 'admin')
             <div class="flex justify-center items-center relative text-gray-400">
                 <svg class="w-4 h-4 absolute left-2" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
@@ -8,24 +8,20 @@
                     <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
                         d="m21 21-3.5-3.5M17 10a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z" />
                 </svg>
-                <input type="text"
-                    class="text-xs w-60 pl-8 pr-3 py-2 border border-gray-300 focus:outline-none focus:border-primary-0 focus:ring-1 focus:ring-lightPrimary-0"
-                    placeholder="Search" />
+                <livewire:search />
             </div>
         @endif
     </div>
     <div class="flex gap-3 items-center justify-end">
         {{-- @if (auth()->user()->role === 'admin') --}}
-            <svg id="filterIcon" class="w-6 h-6 text-gray-800 hover:text-gray-500 cursor-pointer"
-                aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none"
-                viewBox="0 0 24 24">
-                <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
-                    d="M18.796 4H5.204a1 1 0 0 0-.753 1.659l5.302 6.058a1 1 0 0 1 .247.659v4.874a.5.5 0 0 0 .2.4l3 2.25a.5.5 0 0 0 .8-.4v-7.124a1 1 0 0 1 .247-.659l5.302-6.059c.566-.646.106-1.658-.753-1.658Z" />
-            </svg>
+        <svg id="filterIcon" class="w-6 h-6 text-gray-800 hover:text-gray-500 cursor-pointer" aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" viewBox="0 0 24 24">
+            <path stroke="currentColor" stroke-linecap="round" stroke-width="2"
+                d="M18.796 4H5.204a1 1 0 0 0-.753 1.659l5.302 6.058a1 1 0 0 1 .247.659v4.874a.5.5 0 0 0 .2.4l3 2.25a.5.5 0 0 0 .8-.4v-7.124a1 1 0 0 1 .247-.659l5.302-6.059c.566-.646.106-1.658-.753-1.658Z" />
+        </svg>
         {{-- @endif --}}
-        <svg id="userIcon" class="w-6 h-6 text-gray-800 hover:text-gray-500 cursor-pointer"
-            aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor"
-            viewBox="0 0 24 24">
+        <svg id="userIcon" class="w-6 h-6 text-gray-800 hover:text-gray-500 cursor-pointer" aria-hidden="true"
+            xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" viewBox="0 0 24 24">
             <path fill-rule="evenodd"
                 d="M12 4a4 4 0 1 0 0 8 4 4 0 0 0 0-8Zm-2 9a4 4 0 0 0-4 4v1a2 2 0 0 0 2 2h8a2 2 0 0 0 2-2v-1a4 4 0 0 0-4-4h-4Z"
                 clip-rule="evenodd" />
@@ -35,26 +31,43 @@
     <div id="filterOverlay" class="fixed inset-0 bg-black bg-opacity-50 hidden z-50">
         <div class="absolute right-0 top-0 bg-white w-64 h-full p-4 shadow-lg">
             <button id="closeFilter" class="text-gray-600 hover:text-gray-800">
-                <svg class="w-6 h-6 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                    width="24" height="24" fill="none" viewBox="0 0 24 24">
+                <svg class="w-6 h-6 text-gray-800" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" width="24"
+                    height="24" fill="none" viewBox="0 0 24 24">
                     <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                         d="M6 18 17.94 6M18 18 6.06 6" />
                 </svg>
             </button>
-            <h2 class="text-lg font-semibold mb-4">Filter by Status</h2>
+            <h2 class="text-lg font-semibold mb-4">Filter Berdasarkan Status</h2>
             <!-- Filter Options -->
             <div class="space-y-2">
                 <label class="block text-gray-700">
-                    <input type="checkbox" class="mr-2"> Paid
+                    <input type="checkbox" class="mr-2" wire:model.live="selected_categories" value="paid"> Paid
                 </label>
                 <label class="block text-gray-700">
-                    <input type="checkbox" class="mr-2"> On Proccess
+                    <input type="checkbox" class="mr-2" wire:model.live="selected_categories" value="on_process"> On
+                    Proccess
                 </label>
                 <label class="block text-gray-700">
-                    <input type="checkbox" class="mr-2"> Unpaid
+                    <input type="checkbox" class="mr-2" wire:model.live="selected_categories" value="un_paid"> Unpaid
                 </label>
                 <label class="block text-gray-700">
-                    <input type="checkbox" class="mr-2"> Available
+                    <input type="checkbox" class="mr-2" wire:model.live="selected_categories" value="available">
+                    Available
+                </label>
+                <label class="block text-gray-700">
+                    <input type="checkbox" class="mr-2" wire:model.live="selected_categories" value="book"> Book
+                </label>
+            </div>
+            <h2 class="text-lg font-semibold my-4">Filter Per Cabang</h2>
+            <!-- Filter Options -->
+            <div class="space-y-2">
+                <label class="block text-gray-700">
+                    <select name="branch" id="branch" wire:model.live="selected_branch" class="form">
+                        <option value="">Pilih Semua</option>
+                        @foreach ($branches as $branch)
+                            <option value="{{ $branch->id }}">{{ $branch->name }}</option>
+                        @endforeach
+                    </select>
                 </label>
             </div>
             <button class="mt-4 w-full bg-primary-0 hover:bg-lightPrimary-0 text-white text-center py-2">Apply</button>

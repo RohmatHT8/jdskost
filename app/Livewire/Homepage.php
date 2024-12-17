@@ -2,6 +2,7 @@
 
 namespace App\Livewire;
 
+use App\Models\Branch;
 use App\Models\Payment;
 use App\Models\Room;
 use App\Models\RoomPayment;
@@ -10,16 +11,36 @@ use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
+use Livewire\Attributes\Url;
 use Livewire\Component;
 use Livewire\WithFileUploads;
+use Livewire\WithPagination;
 
 class Homepage extends Component
 {
     use WithFileUploads;
+    use WithPagination;
     public $room_id;
     public $amount;
     public $tf_image;
     public $note;
+    public $search;
+    public $selected_categories=[];
+    public $selected_branch;
+
+    protected $listeners = ['searchUpdated' => 'updateSearch', 'selectedCategoriesUpdated', 'selectedBranchUpdate'];
+
+    public function updateSearch($searchTerm)
+    {
+        $this->search = $searchTerm;
+    }
+    public function selectedBranchUpdate($value) {
+        $this->selected_branch = $value;
+    }
+
+    public function selectedCategoriesUpdated($value) {
+        $this->selected_categories = $value;
+    }
 
     public function savePayment()
     {
@@ -106,9 +127,14 @@ class Homepage extends Component
             return view('livewire.homepage', compact('detail', 'payments'));
         };
         if (Auth::user()->role === 'admin') {
-            $rooms = Room::with('branch')->get()->all();
-            // dd(['detail' => $this->room]);
-            return view('livewire.homepage', compact('rooms'));
+            $rooms = Room::with('branch');
+            if (!empty($this->search)) {
+                $rooms->where('number_room', 'like', '%' . $this->search . '%');
+            }
+            if($this->selected_branch) {
+                $rooms->where('branch_id', $this->selected_branch);
+            }
+            return view('livewire.homepage', ['rooms' => $rooms->paginate(12)]);
         }
     }
 

@@ -136,7 +136,7 @@ class Detail extends Component
         $this->userId = DB::table('user_rooms')
             ->select(DB::raw("
                 CASE 
-                    WHEN status = 'out' THEN NULL
+                    WHEN NOT status = 'in' THEN NULL
                     ELSE user_id
                 END AS result
             "))

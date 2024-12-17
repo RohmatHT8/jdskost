@@ -2,8 +2,19 @@
     @if (auth()->user()->role === 'admin')
         <div class="mt-20 px-5 md:px-20 lg:px-32 grid gap-2 md:grid-cols-2 lg:grid-cols-3 mb-5">
             @if ($rooms)
+                <div wire:loading class="fixed inset-0 bg-gray-500 bg-opacity-50 flex items-center justify-center z-10">
+                    <div class="text-white text-lg mt-40">
+                        <svg class="animate-spin h-8 w-8 text-white mx-auto mb-4" xmlns="http://www.w3.org/2000/svg"
+                            fill="none" viewBox="0 0 24 24">
+                            <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                stroke-width="4"></circle>
+                            <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8h8a8 8 0 01-16 0z">
+                            </path>
+                        </svg>
+                    </div>
+                </div>
                 @foreach ($rooms as $room)
-                    <div
+                    <div wire:loading.remove
                         class="w-full grid grid-cols-2 shadow-md overflow-hidden border {{ $room->status() == 'unpaid' || $room->status() == 'rejected' ? 'border-red-600 ring-2 ring-red-600 bg-red-100' : 'border-gray-200 bg-white' }} h-40 ">
                         <!-- Image Section -->
                         <div class="relative">
@@ -62,6 +73,17 @@
                                     </svg>
                                     <p>Paid</p>
                                 </div>
+                            @elseif($room->status() == 'book')
+                                <div
+                                    class="absolute flex items-center text-slate-600 text-xs gap-1 bg-white px-2 py-1 top-3 left-3 rounded-full shadow">
+                                    <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
+                                        fill="currentColor" viewBox="0 0 24 24">
+                                        <path fill-rule="evenodd"
+                                            d="M3 4a1 1 0 0 0-.822 1.57L6.632 12l-4.454 6.43A1 1 0 0 0 3 20h13.153a1 1 0 0 0 .822-.43l4.847-7a1 1 0 0 0 0-1.14l-4.847-7a1 1 0 0 0-.822-.43H3Z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                    <p>Book</p>
+                                </div>
                             @endif
                             <img src="{{ url('uploads/', $room->image_room) }}" alt="Room Image"
                                 class="w-full h-full object-cover" />
@@ -76,10 +98,13 @@
                         </div>
                     </div>
                 @endforeach
+                <div class="mt-4">
+                    {{ $rooms->links() }}
+                </div>
             @else
-            <div class="w-full rounded-md border border-dashed p-5 col-span-3 text-center text-gray-500">
-                Tidak Ada Data
-            </div>
+                <div class="w-full rounded-md border border-dashed p-5 col-span-3 text-center text-gray-500">
+                    Tidak Ada Data
+                </div>
             @endif
         </div>
     @else
@@ -88,7 +113,19 @@
         @else
             <div class="mt-20 mb-10 px-5 md:px-20 lg:px-32 lg:grid lg:grid-cols-3 gap-4">
                 <div class='lg:col-span-2 bg-white shadow-lg p-4 relative rounded-md min-h-[60vh] mb-5 lg:mb-0'>
-                    <div class="bg-primary-0 opacity-80 absolute left-5 right-5 top-5 -bottom-3 -z-10 rounded-md"></div>
+                    <div wire:loading
+                        class="fixed inset-0 bg-gray-500 bg-opacity-50 flex items-center justify-center z-10">
+                        <div class="text-white text-lg mt-40">
+                            <svg class="animate-spin h-8 w-8 text-white mx-auto mb-4" xmlns="http://www.w3.org/2000/svg"
+                                fill="none" viewBox="0 0 24 24">
+                                <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor"
+                                    stroke-width="4"></circle>
+                                <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8h8a8 8 0 01-16 0z">
+                                </path>
+                            </svg>
+                        </div>
+                    </div>
+                    <div wire:loading.remove class="bg-primary-0 opacity-80 absolute left-5 right-5 top-5 -bottom-3 -z-10 rounded-md"></div>
                     <div class="flex justify-between">
                         <h1 class="text-lg font-bold text-primary-0">Rincian Pembayaran</h1>
                         {{-- <h1 class="text-md font-bold text-primary-0">{{auth()->user()->name}}</h1> --}}
@@ -137,6 +174,11 @@
                                                     class="text-white bg-cyan-600 px-3 py-1 rounded-full text-xs text-center">
                                                     Penagihan
                                                 </div>
+                                            @elseif($payment->status === 'book')
+                                                <div
+                                                    class="text-white bg-gray-600 px-3 py-1 rounded-full text-xs text-center">
+                                                    Book
+                                                </div>
                                             @endif
                                         </td>
                                         <td class="p-2 border border-primary-0 text-center">
@@ -161,7 +203,8 @@
                     @endif
                 </div>
                 <div class='lg:col-span-1 bg-white shadow-lg p-4 relative rounded-md min-h-[80vh]'>
-                    <div class="bg-primary-0 opacity-80 absolute left-5 right-5 top-5 -bottom-3 -z-10 rounded-md"></div>
+                    <div class="bg-primary-0 opacity-80 absolute left-5 right-5 top-5 -bottom-3 -z-10 rounded-md">
+                    </div>
                     <div class="border border-gray-500 bg-gray-50 rounded-md p-2 mb-3">
                         <div class="flex justify-between items-center">
                             <h1 class="text-lg font-bold text-primary-0">Tagihan</h1>
@@ -220,8 +263,8 @@
                                 <div class="mb-3">
                                     <label for="note" class="block text-sm mb-2">Catatan</label>
                                     <div class="relative">
-                                        <textarea wire:model="note"  id="note" name="note"
-                                            class="form bg-white rounded-md" aria-describedby="note-error" placeholder="Catatan"></textarea>
+                                        <textarea wire:model="note" id="note" name="note" class="form bg-white rounded-md"
+                                            aria-describedby="note-error" placeholder="Catatan"></textarea>
                                         @error('note')
                                             <div
                                                 class="absolute inset-y-0 end-0 flex items-center pointer-events-none pe-3">
