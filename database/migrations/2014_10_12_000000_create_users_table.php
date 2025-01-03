@@ -22,9 +22,7 @@ return new class extends Migration
             $table->string('emergency_phone');
             $table->string('image_selfie');
             $table->string('job');
-            $table->enum('long_stay', ['3 Bulan', '6 Bulan', '1 Tahun', 'Lebih dari 1 Tahun'])->default('3 Bulan');
-            $table->integer('amount_dp');
-            $table->string('image_dp');
+            $table->string('long_stay');
             $table->enum('role', ['admin', 'user']);
             $table->enum('aggrement', [true, false]);
             $table->rememberToken();

@@ -3,6 +3,7 @@
 namespace App\Livewire\Auth;
 
 use App\Models\Branch;
+use App\Models\DownPayment;
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
@@ -47,7 +48,7 @@ class Register extends Component
             'emergency_phone' => 'required|string',
             'image_selfie' => 'required|image|mimes:jpg,jpeg,png,gif|max:2048',
             'job' => 'required|string|max:100',
-            'long_stay' => 'required|in:3 Bulan,6 Bulan,1 Tahun,Lebih dari 1 Tahun',
+            'long_stay' => 'required|in:Kurang dari 3 Bulan, 3 Bulan,6 Bulan,1 Tahun,Lebih dari 1 Tahun',
             'amount_dp' => 'required|integer',
             'image_dp' => 'required|image|mimes:jpg,jpeg,png,gif|max:2048',
             'role' => 'required|in:admin,user',
@@ -78,17 +79,22 @@ class Register extends Component
             'image_selfie' => $selfie,
             'job' => $this->job,
             'long_stay' => $this->long_stay,
-            'amount_dp' => $this->amount_dp,
-            'image_dp' => $dp,
             'role' => $this->role,
             'aggrement' => $this->aggrement,
+        ]);
+
+        DownPayment::create([
+            'user_id' => $user->id,
+            'amount' => $this->amount_dp,
+            'tf_image' => $dp,
         ]);
 
         UserRoom::create([
             'user_id' => $user->id,
             'room_id' => $this->room_id,
             'status' => $this->status,
-            'date_in' => $this->date_in
+            'date_in' => $this->date_in,
+            'anual_payment' => (int) \Carbon\Carbon::parse($this->date_in)->format('d')
         ]);
 
         auth()->login($user);

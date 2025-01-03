@@ -14,13 +14,14 @@
                     </div>
                 </div>
                 @foreach ($rooms as $room)
+                    {{-- <p>{{!empty($room->payments) ? $room->payments : 'kosong'}}</p> --}}
                     <div wire:loading.remove
-                        class="w-full grid grid-cols-2 shadow-md overflow-hidden border {{ $room->status() == 'unpaid' || $room->status() == 'rejected' ? 'border-red-600 ring-2 ring-red-600 bg-red-100' : 'border-gray-200 bg-white' }} h-40 ">
+                        class="w-full grid grid-cols-2 shadow-md overflow-hidden border {{ $room->status() == 'unpaid' || $room->status() == 'rejected' ? 'border-red-600 ring-2 ring-red-600 bg-red-100' : 'border-gray-200 bg-white' }} md:h-full">
                         <!-- Image Section -->
                         <div class="relative">
                             @if ($room->status() == 'available')
                                 <div
-                                    class="absolute flex items-center text-grey-600 text-xs gap-1 bg-white px-2 py-1 top-3 left-3 rounded-full shadow">
+                                    class="absolute flex items-center z-20 text-grey-600 text-xs gap-1 bg-white px-2 py-1 top-3 left-3 rounded-full shadow">
                                     <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                         fill="currentColor" viewBox="0 0 24 24">
                                         <path fill-rule="evenodd"
@@ -31,7 +32,7 @@
                                 </div>
                             @elseif($room->status() == 'waiting_proccess')
                                 <div
-                                    class="absolute flex items-center text-yellow-600 text-xs gap-1 bg-white px-2 py-1 top-3 left-3 rounded-full shadow">
+                                    class="absolute flex items-center z-20 text-yellow-600 text-xs gap-1 bg-white px-2 py-1 top-3 left-3 rounded-full shadow">
                                     <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                         fill="currentColor" viewBox="0 0 24 24">
                                         <path fill-rule="evenodd"
@@ -42,7 +43,7 @@
                                 </div>
                             @elseif($room->status() == 'unpaid' || $room->status() == 'rejected')
                                 <div
-                                    class="absolute flex items-center text-red-600 text-xs gap-1 bg-white px-2 py-1 top-3 left-3 rounded-full shadow">
+                                    class="absolute flex items-center z-20 text-red-600 text-xs gap-1 bg-white px-2 py-1 top-3 left-3 rounded-full shadow">
                                     <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                         fill="currentColor" viewBox="0 0 24 24">
                                         <path fill-rule="evenodd"
@@ -53,7 +54,7 @@
                                 </div>
                             @elseif($room->status() == 'billing_proccess')
                                 <div
-                                    class="absolute flex items-center text-cyan-600 text-xs gap-1 bg-white px-2 py-1 top-3 left-3 rounded-full shadow">
+                                    class="absolute flex items-center z-20 text-cyan-600 text-xs gap-1 bg-white px-2 py-1 top-3 left-3 rounded-full shadow">
                                     <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                         fill="currentColor" viewBox="0 0 24 24">
                                         <path fill-rule="evenodd"
@@ -64,7 +65,7 @@
                                 </div>
                             @elseif($room->status() == 'approve')
                                 <div
-                                    class="absolute flex items-center text-green-600 text-xs gap-1 bg-white px-2 py-1 top-3 left-3 rounded-full shadow">
+                                    class="absolute flex items-center z-20 text-green-600 text-xs gap-1 bg-white px-2 py-1 top-3 left-3 rounded-full shadow">
                                     <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                                         fill="currentColor" viewBox="0 0 24 24">
                                         <path fill-rule="evenodd"
@@ -73,26 +74,23 @@
                                     </svg>
                                     <p>Paid</p>
                                 </div>
-                            @elseif($room->status() == 'book')
-                                <div
-                                    class="absolute flex items-center text-slate-600 text-xs gap-1 bg-white px-2 py-1 top-3 left-3 rounded-full shadow">
-                                    <svg class="w-4 h-4" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
-                                        fill="currentColor" viewBox="0 0 24 24">
-                                        <path fill-rule="evenodd"
-                                            d="M3 4a1 1 0 0 0-.822 1.57L6.632 12l-4.454 6.43A1 1 0 0 0 3 20h13.153a1 1 0 0 0 .822-.43l4.847-7a1 1 0 0 0 0-1.14l-4.847-7a1 1 0 0 0-.822-.43H3Z"
-                                            clip-rule="evenodd" />
-                                    </svg>
-                                    <p>Book</p>
-                                </div>
                             @endif
+
                             <img src="{{ url('uploads/', $room->image_room) }}" alt="Room Image"
                                 class="w-full h-full object-cover" />
                         </div>
                         <!-- Content Section -->
-                        <div class="grid p-4 gap-1 content-start">
+                        <div class="grid p-4 gap-1 content-start relative">
+                            @if ($room->isBook())
+                                <div class="absolute bg-green-600 top-0 right-0 text-white px-3 text-xs py-1 text-end">
+                                    Booked</div>
+                            @endif
                             <h1 class="text-base font-semibold text-slate-700">{{ $room->number_room }}</h1>
                             <p class="text-sm text-gray-600">{{ $room->branch->name }}</p>
                             <h2 class="text-lg font-semibold text-slate-700">{{ formatRupiah($room->price) }}</h2>
+                            <p class="text-xs font-semibold text-amber-800">
+                                Pembayaran Setiap Tanggal
+                                {{ empty($room->payments[0]) ? '-' : $room->payments[0]->anual_payment }}</p>
                             <a href="/detail/{{ $room->id }}"
                                 class="bg-primary-0 text-white text-center w-full px-3 py-2 mt-2 text-sm  hover:bg-lightPrimary-0 transition">Detail</a>
                         </div>
@@ -111,7 +109,8 @@
         @if (!$detail)
             <div class="mt-24 text-center font-bold text-primary-0">Anda Tidak Terdaftar di JDS Kost</div>
         @else
-            <div class="mt-20 mb-10 px-5 md:px-20 lg:px-32 lg:grid lg:grid-cols-3 gap-4">
+            {{-- yang dulu --}}
+            {{-- <div class="mt-20 mb-10 px-5 md:px-20 lg:px-32 lg:grid lg:grid-cols-3 gap-4">
                 <div class='lg:col-span-2 bg-white shadow-lg p-4 relative rounded-md min-h-[60vh] mb-5 lg:mb-0'>
                     <div wire:loading
                         class="fixed inset-0 bg-gray-500 bg-opacity-50 flex items-center justify-center z-10">
@@ -125,10 +124,10 @@
                             </svg>
                         </div>
                     </div>
-                    <div wire:loading.remove class="bg-primary-0 opacity-80 absolute left-5 right-5 top-5 -bottom-3 -z-10 rounded-md"></div>
+                    <div wire:loading.remove
+                        class="bg-primary-0 opacity-80 absolute left-5 right-5 top-5 -bottom-3 -z-10 rounded-md"></div>
                     <div class="flex justify-between">
                         <h1 class="text-lg font-bold text-primary-0">Rincian Pembayaran</h1>
-                        {{-- <h1 class="text-md font-bold text-primary-0">{{auth()->user()->name}}</h1> --}}
                     </div>
                     <hr class="my-2" />
                     @if ($payments->isEmpty())
@@ -174,11 +173,6 @@
                                                     class="text-white bg-cyan-600 px-3 py-1 rounded-full text-xs text-center">
                                                     Penagihan
                                                 </div>
-                                            @elseif($payment->status === 'book')
-                                                <div
-                                                    class="text-white bg-gray-600 px-3 py-1 rounded-full text-xs text-center">
-                                                    Book
-                                                </div>
                                             @endif
                                         </td>
                                         <td class="p-2 border border-primary-0 text-center">
@@ -197,9 +191,6 @@
                                 @endforeach
                             </tbody>
                         </table>
-                        {{-- <div class="flex justify-center mt-4">
-                            {{ $payment[0]->links() }} <!-- Menampilkan links pagination -->
-                        </div> --}}
                     @endif
                 </div>
                 <div class='lg:col-span-1 bg-white shadow-lg p-4 relative rounded-md min-h-[80vh]'>
@@ -212,10 +203,7 @@
                                 {{ formatRupiah($detail->price) }}/bulan</p>
                         </div>
                         <hr class="my-2" />
-                        @if (
-                            $detail->status_payment == 'unpaid' ||
-                                $detail->status_payment == 'billing_proccess' ||
-                                $detail->status_payment == 'rejected')
+                        @if ($detail->status_payment == 'unpaid' || $detail->status_payment == 'billing_proccess' || $detail->status_payment == 'rejected')
                             <form wire:submit.prevent="savePayment">
                                 <div class="mb-3">
                                     <label for="amount" class="block text-sm mb-2">Jumlah
@@ -302,7 +290,6 @@
                     <div class="border border-grey-500 bg-grey-50 rounded-md p-2">
                         <div class="flex justify-between">
                             <h1 class="text-lg font-bold text-grey-600">Data Diri</h1>
-                            {{-- <h1 class="text-md font-bold text-primary-0">{{auth()->user()->name}}</h1> --}}
                         </div>
                         <hr class="my-2" />
                         <table class="w-full text-slate-500">
@@ -341,6 +328,70 @@
                         </table>
                         <p class="text-red-500 italic text-xs">*Default Password: Nama depan dimulai huruf besar, tgl
                             masuk/bulan masuk cth: User22/11</p>
+                    </div>
+                </div>
+            </div> --}}
+            {{-- akhir yang dulu --}}
+            <div class="w-full pb-3 mt-10 pt-12 px-5 md:px-20 lg:px-32  text-slate-200">
+                <p class="font-bold text-lg md:text-2xl">Hi, {{ $detail[0]->name }}</p>
+                <p class="text-xs font-semibold text-slate-300 md:text-base">Nomor Kamar {{ $detail[0]->number_room }}
+                    ({{ $detail[0]->status }})</p>
+                <p class="text-xs font-semibold text-slate-300 md:text-base">Tenggat waktu bayar setiap tanggal
+                    {{ $detail[0]->anual_payment }}</p>
+                <p class="text-xs font-semibold text-slate-300 md:text-base italic">Biaya perbulan
+                    {{ formatRupiah($detail[0]->price) }}</p>
+            </div>
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-2 mt-5 px-5 md:px-20 lg:px-32">
+                <a href="/detail-payment"
+                    class='w-full py-5 bg-slate-200 px-3 flex flex-col justify-center items-center hover:bg-slate-300 hover:shadow-lg cursor-pointer transition-all'>
+                    <img src="{{ asset('assets/rincian-pembayaran.png') }}" alt="rincian-pembayaran"
+                        class='max-w-32' />
+                    <p class="text-gray-700 font-bold">Rincian Pembayaran</p>
+                </a>
+                <a href="/pay-rent"
+                    class='w-full py-5 bg-slate-200 px-3 flex flex-col justify-center items-center hover:bg-slate-300 hover:shadow-lg cursor-pointer transition-all'>
+                    <img src="{{ asset('assets/bayar-sewa.png') }}" alt="bayar-sewa" class='max-w-32' />
+                    <p class="text-gray-700 font-bold">Bayar Sewa</p>
+                </a>
+                <a href="/profile"
+                    class='w-full py-5 bg-slate-200 px-3 flex flex-col justify-center items-center hover:bg-slate-300 hover:shadow-lg cursor-pointer transition-all'>
+                    <img src="{{ asset('assets/data-diri.png') }}" alt="data-diri" class='max-w-32' />
+                    <p class="text-gray-700 font-bold">Data Diri</p>
+                </a>
+                <a
+                    class='w-full py-5 bg-slate-200 px-3 flex flex-col justify-center items-center hover:bg-slate-300 hover:shadow-lg cursor-pointer transition-all'>
+                    <img src="{{ asset('assets/keluar-kamar.png') }}" alt="keluar-kamar" class='max-w-32' />
+                    <p class="text-gray-700 font-bold">Keluar Kamar</p>
+                </a>
+            </div>
+            <div class="px-5 md:px-20 lg:px-32 mt-3 mb-10">
+                <div class="border px-3 py-2 bg-gray-700">
+                    <h1 class="text-white font-bold text-lg mb-3">Syarat dan Ketentuan</h1>
+                    <div class="flex gap-2 text-sm mb-2 text-slate-700">
+                        <div class="bg-yellow-300 font-bold rounded-full flex justify-center items-center flex-none" style="height: 40px; width: 40px;">
+                            <p>1</p>
+                        </div>
+                        <div class="text-slate-300">
+                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, modi adipisci
+                                consequatur
+                                labore asperiores commodi eligendi fuga id ratione vitae voluptatem cupiditate voluptas!
+                                Non
+                                inventore ad ab corrupti consectetur qui blanditiis veniam praesentium id repudiandae
+                                tenetur explicabo.</p>
+                        </div>
+                    </div>
+                    <div class="flex gap-2 text-sm mb-2 text-slate-700">
+                        <div class="bg-yellow-300 font-bold rounded-full flex justify-center items-center flex-none" style="height: 40px; width: 40px;">
+                            <p class="text-slate-600">2</p>
+                        </div>
+                        <div>
+                            <p class="text-slate-300">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, modi adipisci
+                                consequatur
+                                labore asperiores commodi eligendi fuga id ratione vitae voluptatem cupiditate voluptas!
+                                Non
+                                inventore ad ab corrupti consectetur qui blanditiis veniam praesentium id repudiandae
+                                tenetur explicabo .</p>
+                        </div>
                     </div>
                 </div>
             </div>

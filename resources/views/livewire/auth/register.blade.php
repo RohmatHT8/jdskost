@@ -299,31 +299,6 @@
                                 <!-- End Form Group -->
 
                                 <!-- Form Group -->
-                                {{-- <div>
-                                    <label for="date_check_in" class="block text-sm mb-2">Tanggal
-                                        Masuk<span class="text-red-600">*</span></label>
-                                    <div class="relative">
-                                        <input wire:model="date_check_in" type="date" id="date_check_in"
-                                            name="date_check_in" class="form" placeholder="Nama Lengkap"
-                                            aria-describedby="date_check_in-error">
-                                        @error('date_check_in')
-                                            <div
-                                                class="absolute inset-y-0 end-0 flex items-center pointer-events-none pe-3">
-                                                <svg class="h-5 w-5 text-red-500" width="16" height="16"
-                                                    fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
-                                                    <path
-                                                        d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
-                                                </svg>
-                                            </div>
-                                        @enderror
-                                    </div>
-                                    @error('date_check_in')
-                                        <p class="text-xs text-red-600 mt-2" id="email-error">{{ $message }}</p>
-                                    @enderror
-                                </div> --}}
-                                <!-- End Form Group -->
-
-                                <!-- Form Group -->
                                 <div>
                                     <label for="long_stay" class="block text-sm mb-2">Saya Akan
                                         Tinggal
@@ -332,6 +307,7 @@
                                         <select wire:model="long_stay" id="long_stay" name="long_stay"
                                             class="form">
                                             <option value="">Pilih Salah Satu</option>
+                                            <option value="Kurang dari 3 Bulan">Kurang dari 3 Bulan</option>
                                             <option value="3 Bulan">3 Bulan</option>
                                             <option value="6 Bulan">6 Bulan</option>
                                             <option value="1 Tahun">1 Tahun</option>

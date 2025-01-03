@@ -25,7 +25,7 @@ class Homepage extends Component
     public $tf_image;
     public $note;
     public $search;
-    public $selected_categories=[];
+    public $selected_categories = [];
     public $selected_branch;
 
     protected $listeners = ['searchUpdated' => 'updateSearch', 'selectedCategoriesUpdated', 'selectedBranchUpdate'];
@@ -34,11 +34,13 @@ class Homepage extends Component
     {
         $this->search = $searchTerm;
     }
-    public function selectedBranchUpdate($value) {
+    public function selectedBranchUpdate($value)
+    {
         $this->selected_branch = $value;
     }
 
-    public function selectedCategoriesUpdated($value) {
+    public function selectedCategoriesUpdated($value)
+    {
         $this->selected_categories = $value;
     }
 
@@ -81,57 +83,30 @@ class Homepage extends Component
     public function render()
     {
         if (Auth::user()->role === 'user') {
-            $detail = User::join('user_rooms as ur', 'ur.user_id', '=', 'users.id')
-                ->join('rooms as r', 'r.id', '=', 'ur.room_id')
-                ->leftJoin('room_payments as rp', 'rp.room_id', '=', 'r.id')
-                ->leftJoin('payments as p', 'p.id', '=', 'rp.payment_id')
-                ->where('users.id', Auth::user()->id)
-                ->select(
-                    'users.id',
-                    'users.name',
-                    'users.email',
-                    'users.phone_number',
-                    'users.emergency_phone',
-                    'users.image_selfie',
-                    'users.job',
-                    'users.long_stay',
-                    'users.amount_dp',
-                    'ur.*',
-                    'r.*',
-                    DB::raw("
-                    CASE 
-                        WHEN p.id IS NULL THEN 'unpaid' 
-                        ELSE (
-                            SELECT p2.status 
-                            FROM payments p2 
-                            JOIN room_payments rp2 ON rp2.payment_id = p2.id
-                            WHERE rp2.room_id = r.id
-                            ORDER BY p2.created_at DESC
-                            LIMIT 1
-                        )
-                    END AS status_payment
-                ")
-                )
-                ->orderBy('ur.created_at', 'desc')
-                ->limit(1)
-                ->first();
-            // dd(json_decode(json_encode($this->detail), true));
-            $this->room_id = $detail->room_id;
-            $payments = DB::table('room_payments as rp')
-                ->join('payments as p', 'p.id', '=', 'rp.payment_id')
-                ->where('rp.room_id', $detail->room_id)
-                ->orderBy('p.created_at', 'desc') // Urutkan berdasarkan created_at (terbaru)
-                ->select('rp.*', 'p.*')
+            $subquery = DB::table('user_rooms')
+                ->select('*')
+                ->whereIn('id', function ($query) {
+                    $query->selectRaw('MAX(id)')
+                        ->from('user_rooms')
+                        ->groupBy('user_id');
+                })
+                ->whereNot('status', 'out');
+
+            // Query utama menggunakan subquery
+            $detail = DB::table('users as u')
+                ->leftJoinSub($subquery, 'ur', 'ur.user_id', '=', 'u.id')
+                ->leftJoin('rooms as r', 'r.id', '=', 'ur.room_id')
+                ->where('u.id', Auth::user()->id)
+                ->select('u.name', 'r.number_room', 'r.price', 'ur.status', 'ur.anual_payment')
                 ->get();
-            // dd($payments);
-            return view('livewire.homepage', compact('detail', 'payments'));
+            return view('livewire.homepage', compact('detail'));
         };
         if (Auth::user()->role === 'admin') {
-            $rooms = Room::with('branch');
+            $rooms = Room::with('branch', 'roomPayments.room');
             if (!empty($this->search)) {
                 $rooms->where('number_room', 'like', '%' . $this->search . '%');
             }
-            if($this->selected_branch) {
+            if ($this->selected_branch) {
                 $rooms->where('branch_id', $this->selected_branch);
             }
             return view('livewire.homepage', ['rooms' => $rooms->paginate(12)]);

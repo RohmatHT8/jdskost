@@ -28,20 +28,22 @@
                             </div>
                         </div>
                     </div>
-
                     @if ($payment)
                         <div class="flex justify-end">
-                            <p>No: {{ $payment[0]['no'] }}</p>
+                            <p class="font-semibold text-slate-700">No: {{ $payment[0]['no'] }}</p>
                         </div>
-                        <div>
+                        <div class="font-semibold text-slate-700">
                             <p>Bukti Tf : </p>
                             <div class="flex justify-center border border-dashed my-2">
                                 <img src="{{ url('uploads', $payment[0]['tf_image']) }}" alt="BuktiTf"
                                     width="50%" />
                             </div>
                         </div>
-                        <p>Jumlah Transfer: {{ formatRupiah($payment[0]['amount']) }}</p>
-                        <p>Tanggal Transfer: {{ $payment[0]['created_at'] }}</p>
+                        <p class="font-semibold text-slate-700">Jumlah Transfer: {{ formatRupiah($payment[0]['amount']) }}</p>
+                        <p class="font-semibold text-slate-700">Tanggal Transfer: {{ $payment[0]['created_at'] }}</p>
+                        <textarea wire:model.live="note" id="note" name="note"
+                            class="py-3 px-4 block w-full border border-gray-200 text-sm focus:border-primary-0 focus:ring-primary-0 focus:outline-primary-0 active:border-primary-0 active:ring-primary-0 disabled:opacity-50 disabled:pointer-events-none rounded-none bg-white mt-3"
+                            aria-describedby="note-error" placeholder="Catatan"></textarea>
                     @endif
                 </div>
                 <div class="flex justify-end items-center gap-x-2 py-3 px-4 border-t">
@@ -129,16 +131,29 @@
                     <h1 class="font-bold text-4xl text-white">{{ $roomView->number_room }}</h1>
                     <p class="text-xs font-semibold text-white">{{ $roomView->branch->name }}</p>
                     <h1 class="text-md font-semibold text-white">{{ formatRupiah($roomView->price) }}</h1>
-                    @if ($roomView->status() == 'unpaid' || $roomView->status() == 'rejected')
-                        <button type="button" wire:click="sendBill" wire:loading.attr="disabled" wire:target="sendBill"
-                            class="px-3 py-1 text-sm mt-3 font-semibold text-white bg-yellow-500 hover:bg-yellow-600">Send
-                            Bill</button>
-                    @endif
-                    @if ($roomView->status() == 'waiting_proccess')
-                        <button wire:click="showModal"
-                            class="px-3 py-1 text-sm mt-3 font-semibold text-white bg-green-600 hover:bg-green-700"
-                            aria-haspopup="dialog" aria-expanded="false" aria-controls="hs-basic-modal"
-                            data-hs-overlay="#hs-basic-modal">Approve</button>
+                    <div>
+                        <label class="text-white">Nama Penyewa</label>
+                        <select wire:model.live='userId' class="text-sm py-1 w-full">
+                            <option class="rounded-none" value="">Pilih Salah Satu</option>
+                            @foreach ($userSelect as $item)
+                                <option class="rounded-none" value="{{ $item->id }}">{{ $item->name }}
+                                </option>
+                            @endforeach
+                        </select>
+                    </div>
+                    @if ($roomStatus)
+                        @if ($roomStatus->status() == 'unpaid' || $roomStatus->status() == 'rejected')
+                            <button type="button" wire:click="sendBill" wire:loading.attr="disabled"
+                                wire:target="sendBill"
+                                class="px-3 py-1 text-sm mt-3 font-semibold text-white bg-yellow-500 hover:bg-yellow-600">Send
+                                Bill</button>
+                        @endif
+                        @if ($roomStatus->status() == 'waiting_proccess')
+                            <button wire:click="showModal"
+                                class="px-3 py-1 text-sm mt-3 font-semibold text-white bg-green-600 hover:bg-green-700"
+                                aria-haspopup="dialog" aria-expanded="false" aria-controls="hs-basic-modal"
+                                data-hs-overlay="#hs-basic-modal">Approve</button>
+                        @endif
                     @endif
                 </div>
                 <div class="p-2">
@@ -183,6 +198,11 @@
                                     <td class="py-1">Lama Tinggal</td>
                                     <td class="font-semibold">
                                         {{ $userDetailView->long_stay }}</tD>
+                                </tr>
+                                <tr>
+                                    <td class="py-1">Status</td>
+                                    <td class="font-semibold">
+                                        {{ $userDetailView->status }}</td>
                                 </tr>
                             </table>
                         @else

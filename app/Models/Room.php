@@ -29,30 +29,10 @@ class Room extends Model
 
     public function status()
     {
-
-        $book = DB::table('user_rooms')
-            ->select(
-                'user_id',
-                'room_id',
-                'status',
-                'created_at',
-                DB::raw("CASE WHEN status = 'book' THEN 'book' ELSE NULL END AS result_status")
-            )
-            ->whereIn('id', function ($query) {
-                $query->select(DB::raw('MAX(id)'))
-                    ->from('user_rooms')
-                    ->where('room_id', $this->id  )
-                    ->groupBy('user_id');
-            })
-            ->pluck('result_status')
-            ->first();
-        if ($book == 'book') {
-            return 'book';
-        };
         $available = Room::selectRaw('
                 CASE 
                     WHEN user_rooms.room_id IS NULL THEN "available"
-                    WHEN MAX(user_rooms.status) = "out" THEN "available"
+                    WHEN NOT MAX(user_rooms.status) = "in" THEN "available"
                     ELSE MAX(user_rooms.status)
                 END AS status
             ')
@@ -64,7 +44,6 @@ class Room extends Model
         if ($available->status === 'available') {
             return $available->status;
         }
-
         if ($this->hasNoPayments()) {
             return 'unpaid';
         }
@@ -103,6 +82,26 @@ class Room extends Model
             ->first();
         return $status->payment_status;
     }
+    public function isBook()
+    {
+        $book = DB::table('user_rooms')
+            ->select(
+                'user_id',
+                'room_id',
+                'status',
+                'created_at',
+                DB::raw("CASE WHEN status = 'book' THEN 'book' ELSE NULL END AS result_status")
+            )
+            ->whereIn('id', function ($query) {
+                $query->select(DB::raw('MAX(id)'))
+                    ->from('user_rooms')
+                    ->where('room_id', $this->id)
+                    ->groupBy('user_id');
+            })
+            ->pluck('result_status')
+            ->first();
+        return $book ? 'book' : null;
+    }
 
     public function roomPayments()
     {
@@ -133,7 +132,7 @@ class Room extends Model
 
     public function userRooms()
     {
-        return $this->hasMany(UserRoom::class);
+        return $this->hasMany(UserRoom::class, 'room_id');
     }
 
     public function hasNoPayments(): bool

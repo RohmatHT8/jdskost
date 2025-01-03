@@ -22,7 +22,14 @@ class RoomResource extends Resource
 {
     protected static ?string $model = Room::class;
 
+    protected static ?string $navigationGroup = 'Master';
+
     protected static ?string $navigationIcon = 'heroicon-o-square-3-stack-3d';
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        return auth()->user()?->role === 'admin';
+    }
 
     public static function form(Form $form): Form
     {
@@ -31,7 +38,8 @@ class RoomResource extends Resource
                 Group::make()->schema([
                     Forms\Components\TextInput::make('number_room')
                         ->required()
-                        ->maxLength(255),
+                        ->maxLength(255)
+                        ->unique(Room::class, 'number_room', ignoreRecord: true),
                     Forms\Components\Select::make('branch_id')
                         ->relationship('branch', 'name')
                         ->label('Branch')
@@ -79,7 +87,7 @@ class RoomResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
-                Tables\Actions\ViewAction::make(),
+                Tables\Actions\DeleteAction::make()
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

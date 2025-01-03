@@ -11,14 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('user_rooms', function (Blueprint $table) {
+        Schema::create('down_payments', function (Blueprint $table) {
             $table->id();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
-            $table->foreignId('room_id')->constrained('rooms')->cascadeOnDelete();
-            $table->date('date_in');
-            $table->date('date_out')->nullable();
-            $table->integer('anual_payment')->nullable();
-            $table->enum('status', ['in', 'out', 'book'])->default('in');
+            $table->longText('note')->nullable();
+            $table->integer('amount');
+            $table->string('tf_image');
             $table->timestamps();
         });
     }
@@ -28,6 +26,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('user_rooms');
+        Schema::dropIfExists('down_payments');
     }
 };

@@ -19,6 +19,8 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        if (!array_key_exists('HOME', $_SERVER)) {
+            $_SERVER['HOME'] = base_path();  // Set path Laravel base jika tidak ada variabel HOME
+        }
     }
 }

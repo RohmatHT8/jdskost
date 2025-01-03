@@ -7,6 +7,9 @@ use App\Livewire\Auth\Register;
 use App\Livewire\Auth\Reset;
 use App\Livewire\Detail;
 use App\Livewire\Homepage;
+use App\Livewire\Users\DetailPayment;
+use App\Livewire\Users\PayRent;
+use App\Livewire\Users\Profile;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -34,6 +37,10 @@ Route::middleware('auth')->group(function () {
     });
     Route::get('/', Homepage::class);
     Route::get('/detail/{param}', Detail::class);
+
+    Route::get('/detail-payment', DetailPayment::class);
+    Route::get('/pay-rent', PayRent::class);
+    Route::get('/profile', Profile::class);
 });
 
 Route::post('/upload-image', [ImageUploadController::class, 'uploadImage'])->name('upload.image');

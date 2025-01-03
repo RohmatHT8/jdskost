@@ -18,7 +18,14 @@ class UserRoomResource extends Resource
 {
     protected static ?string $model = UserRoom::class;
 
+    protected static ?string $navigationGroup = 'Transaction';
+
     protected static ?string $navigationIcon = 'heroicon-o-table-cells';
+
+    public static function shouldRegisterNavigation(): bool
+    {
+        return auth()->user()?->role === 'admin';
+    }
 
     public static function form(Form $form): Form
     {
@@ -41,7 +48,7 @@ class UserRoomResource extends Resource
                     ->required()
                     ->reactive(), // React terhadap perubahan nilai
 
-                Forms\Components\Select::make('room_id') 
+                Forms\Components\Select::make('room_id')
                     ->relationship('room', 'number_room')
                     ->label('Number Room')
                     ->searchable()
@@ -73,12 +80,14 @@ class UserRoomResource extends Resource
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('user_id')
-                    ->numeric()
-                    ->sortable(),
-                Tables\Columns\TextColumn::make('room_id')
-                    ->numeric()
-                    ->sortable(),
+                Tables\Columns\TextColumn::make('user.name')
+                    ->label('Name')
+                    ->sortable()
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('room.number_room')
+                    ->label('Room Number')
+                    ->sortable()
+                    ->searchable(),
                 Tables\Columns\TextColumn::make('date_in')
                     ->date()
                     ->sortable(),
@@ -97,6 +106,8 @@ class UserRoomResource extends Resource
             ])
             ->actions([
                 Tables\Actions\EditAction::make(),
+                Tables\Actions\DeleteAction::make(),
+                Tables\Actions\ViewAction::make(),
             ])
             ->bulkActions([
                 Tables\Actions\BulkActionGroup::make([

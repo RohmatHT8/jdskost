@@ -20,7 +20,7 @@
     @endauth
     <main class="relative">
         {{ $slot }}
-        <a href="https://wa.me/628170056573?text=Halo,%20saya%20mau%20bertanya%20tentang:" class="fixed bottom-7 right-7 bg-green-600 w-14 h-14 rounded-full flex justify-center items-center hover:shadow-lg hover:bg-green-700">
+        <a href="https://wa.me/628170056573?text=Halo,%20saya%20mau%20bertanya%20tentang:" target="_blank" class="fixed bottom-7 right-7 bg-green-600 w-14 h-14 rounded-full flex justify-center items-center hover:shadow-lg hover:bg-green-700 scale-75 hover:scale-100 transition-all ease-out">
             <svg class="w-10 h-10 text-white" aria-hidden="true" xmlns="http://www.w3.org/2000/svg"
                 width="24" height="24" fill="none" viewBox="0 0 24 24">
                 <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
