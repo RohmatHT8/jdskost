@@ -41,21 +41,18 @@
             <!-- Filter Options -->
             <div class="space-y-2">
                 <label class="block text-gray-700">
-                    <input type="checkbox" class="mr-2" wire:model.live="selected_categories" value="paid"> Paid
+                    <input type="checkbox" class="mr-2" wire:model.live="selected_categories" value="approve"> Paid
                 </label>
                 <label class="block text-gray-700">
-                    <input type="checkbox" class="mr-2" wire:model.live="selected_categories" value="on_process"> On
+                    <input type="checkbox" class="mr-2" wire:model.live="selected_categories" value="waiting_proccess"> On
                     Proccess
                 </label>
                 <label class="block text-gray-700">
-                    <input type="checkbox" class="mr-2" wire:model.live="selected_categories" value="un_paid"> Unpaid
+                    <input type="checkbox" class="mr-2" wire:model.live="selected_categories" value="unpaid"> Unpaid
                 </label>
                 <label class="block text-gray-700">
                     <input type="checkbox" class="mr-2" wire:model.live="selected_categories" value="available">
                     Available
-                </label>
-                <label class="block text-gray-700">
-                    <input type="checkbox" class="mr-2" wire:model.live="selected_categories" value="book"> Book
                 </label>
             </div>
             <h2 class="text-lg font-semibold my-4">Filter Per Cabang</h2>
@@ -70,7 +67,7 @@
                     </select>
                 </label>
             </div>
-            <button class="mt-4 w-full bg-primary-0 hover:bg-lightPrimary-0 text-white text-center py-2">Apply</button>
+            {{-- <button class="mt-4 w-full bg-primary-0 hover:bg-lightPrimary-0 text-white text-center py-2">Apply</button> --}}
         </div>
     </div>
     <!-- User Profile Pop-Up -->

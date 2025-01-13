@@ -90,26 +90,57 @@ class Homepage extends Component
                         ->from('user_rooms')
                         ->groupBy('user_id');
                 })
-                ->whereNot('status', 'out');
+                ->where(function ($query) {
+                    $query->where('status', '!=', 'out')
+                        ->orWhere(function ($subQuery) {
+                            $subQuery->where('status', 'out')
+                                ->where('date_out', '>', now());
+                        });
+                });
 
             // Query utama menggunakan subquery
             $detail = DB::table('users as u')
                 ->leftJoinSub($subquery, 'ur', 'ur.user_id', '=', 'u.id')
                 ->leftJoin('rooms as r', 'r.id', '=', 'ur.room_id')
                 ->where('u.id', Auth::user()->id)
-                ->select('u.name', 'r.number_room', 'r.price', 'ur.status', 'ur.anual_payment')
+                ->select('u.name', 'r.number_room', 'r.price', 'ur.status', 'ur.anual_payment', 'ur.date_out')
                 ->get();
             return view('livewire.homepage', compact('detail'));
         };
         if (Auth::user()->role === 'admin') {
-            $rooms = Room::with('branch', 'roomPayments.room');
+            // Ambil semua data room
+            $rooms = Room::with('branch', 'roomPayments.room')->get();
+
+            // Tambahkan status ke setiap room
+            $roomsWithStatus = $rooms->map(function ($room) {
+                $room->calculated_status = $room->status(); // Panggil fungsi status dari model
+                return $room;
+            });
+
+            // Filter data berdasarkan status (jika ada kategori terpilih)
+            if (!empty($this->selected_categories)) {
+                $roomsWithStatus = $roomsWithStatus->filter(function ($room) {
+                    return in_array($room->calculated_status, $this->selected_categories);
+                });
+            }
+
+            // Filter data berdasarkan pencarian
             if (!empty($this->search)) {
-                $rooms->where('number_room', 'like', '%' . $this->search . '%');
+                $roomsWithStatus = $roomsWithStatus->filter(function ($room) {
+                    return str_contains($room->number_room, $this->search);
+                });
             }
+
+            // Filter berdasarkan branch (jika ada)
             if ($this->selected_branch) {
-                $rooms->where('branch_id', $this->selected_branch);
+                $roomsWithStatus = $roomsWithStatus->filter(function ($room) {
+                    return $room->branch_id == $this->selected_branch;
+                });
             }
-            return view('livewire.homepage', ['rooms' => $rooms->paginate(12)]);
+
+            return view('livewire.homepage', [
+                'rooms' => $roomsWithStatus,
+            ]);
         }
     }
 

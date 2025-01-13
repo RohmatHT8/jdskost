@@ -142,12 +142,12 @@
                         </select>
                     </div>
                     @if ($roomStatus)
-                        @if ($roomStatus->status() == 'unpaid' || $roomStatus->status() == 'rejected')
+                        {{-- @if ($roomStatus->status() == 'unpaid' || $roomStatus->status() == 'rejected')
                             <button type="button" wire:click="sendBill" wire:loading.attr="disabled"
                                 wire:target="sendBill"
                                 class="px-3 py-1 text-sm mt-3 font-semibold text-white bg-yellow-500 hover:bg-yellow-600">Send
                                 Bill</button>
-                        @endif
+                        @endif --}}
                         @if ($roomStatus->status() == 'waiting_proccess')
                             <button wire:click="showModal"
                                 class="px-3 py-1 text-sm mt-3 font-semibold text-white bg-green-600 hover:bg-green-700"
@@ -217,6 +217,11 @@
                         <div class="mt-2 bg-green-100 border border-green-200 text-sm text-green-800 rounded-lg p-4 mb-4 "
                             role="alert" tabindex="-1" aria-labelledby="hs-soft-color-danger-label">
                             {{ session('message') }}
+                        </div>
+                    @elseif (session('message-reject'))
+                        <div class="mt-2 bg-red-100 border border-red-200 text-sm text-red-800 rounded-lg p-4 mb-4 "
+                            role="alert" tabindex="-1" aria-labelledby="hs-soft-color-danger-label">
+                            {{ session('message-reject') }}
                         </div>
                     @endif
                     <table

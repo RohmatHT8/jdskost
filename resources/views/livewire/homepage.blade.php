@@ -88,17 +88,19 @@
                             <h1 class="text-base font-semibold text-slate-700">{{ $room->number_room }}</h1>
                             <p class="text-sm text-gray-600">{{ $room->branch->name }}</p>
                             <h2 class="text-lg font-semibold text-slate-700">{{ formatRupiah($room->price) }}</h2>
-                            <p class="text-xs font-semibold text-amber-800">
-                                Pembayaran Setiap Tanggal
-                                {{ empty($room->payments[0]) ? '-' : $room->payments[0]->anual_payment }}</p>
+                            @if ($room->status() !== 'available')
+                                <p class="text-xs font-semibold text-amber-800">
+                                    Pembayaran Setiap Tanggal
+                                    {{ empty($room->payments[0]) ? '-' : $room->payments[0]->anual_payment }}</p>
+                            @endif
                             <a href="/detail/{{ $room->id }}"
                                 class="bg-primary-0 text-white text-center w-full px-3 py-2 mt-2 text-sm  hover:bg-lightPrimary-0 transition">Detail</a>
                         </div>
                     </div>
                 @endforeach
-                <div class="mt-4">
+                {{-- <div class="mt-4">
                     {{ $rooms->links() }}
-                </div>
+                </div> --}}
             @else
                 <div class="w-full rounded-md border border-dashed p-5 col-span-3 text-center text-gray-500">
                     Tidak Ada Data
@@ -335,10 +337,10 @@
             <div class="w-full pb-3 mt-10 pt-12 px-5 md:px-20 lg:px-32  text-slate-200">
                 <p class="font-bold text-lg md:text-2xl">Hi, {{ $detail[0]->name }}</p>
                 <p class="text-xs font-semibold text-slate-300 md:text-base">Nomor Kamar {{ $detail[0]->number_room }}
-                    ({{ $detail[0]->status }})</p>
+                    ({{ $detail[0]->status }}) {{ $detail[0]->date_out }}</p>
                 <p class="text-xs font-semibold text-slate-300 md:text-base">Tenggat waktu bayar setiap tanggal
                     {{ $detail[0]->anual_payment }}</p>
-                <p class="text-xs font-semibold text-slate-300 md:text-base italic">Biaya perbulan
+                <p class="text-xs font-semibold text-slate-300 md:text-base italic">Biaya sewa perbulan
                     {{ formatRupiah($detail[0]->price) }}</p>
             </div>
             <div class="grid grid-cols-2 md:grid-cols-4 gap-2 mt-5 px-5 md:px-20 lg:px-32">
@@ -358,7 +360,7 @@
                     <img src="{{ asset('assets/data-diri.png') }}" alt="data-diri" class='max-w-32' />
                     <p class="text-gray-700 font-bold">Data Diri</p>
                 </a>
-                <a
+                <a href='/out-room'
                     class='w-full py-5 bg-slate-200 px-3 flex flex-col justify-center items-center hover:bg-slate-300 hover:shadow-lg cursor-pointer transition-all'>
                     <img src="{{ asset('assets/keluar-kamar.png') }}" alt="keluar-kamar" class='max-w-32' />
                     <p class="text-gray-700 font-bold">Keluar Kamar</p>
@@ -368,7 +370,8 @@
                 <div class="border px-3 py-2 bg-gray-700">
                     <h1 class="text-white font-bold text-lg mb-3">Syarat dan Ketentuan</h1>
                     <div class="flex gap-2 text-sm mb-2 text-slate-700">
-                        <div class="bg-yellow-300 font-bold rounded-full flex justify-center items-center flex-none" style="height: 40px; width: 40px;">
+                        <div class="bg-yellow-300 font-bold rounded-full flex justify-center items-center flex-none"
+                            style="height: 40px; width: 40px;">
                             <p>1</p>
                         </div>
                         <div class="text-slate-300">
@@ -381,11 +384,13 @@
                         </div>
                     </div>
                     <div class="flex gap-2 text-sm mb-2 text-slate-700">
-                        <div class="bg-yellow-300 font-bold rounded-full flex justify-center items-center flex-none" style="height: 40px; width: 40px;">
+                        <div class="bg-yellow-300 font-bold rounded-full flex justify-center items-center flex-none"
+                            style="height: 40px; width: 40px;">
                             <p class="text-slate-600">2</p>
                         </div>
                         <div>
-                            <p class="text-slate-300">Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, modi adipisci
+                            <p class="text-slate-300">Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                                Quisquam, modi adipisci
                                 consequatur
                                 labore asperiores commodi eligendi fuga id ratione vitae voluptatem cupiditate voluptas!
                                 Non

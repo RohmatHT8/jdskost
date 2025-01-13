@@ -43,7 +43,7 @@
                     </tr>
                     <tr>
                         <td class="py-1">DP</td>
-                        <td class="font-semibold">{{ Number::currency($detail->amount_dp, 'IDR') }}</td>
+                        <td class="font-semibold">{{ Number::currency($dp['amount'], 'IDR') }}</td>
                     </tr>
                 </table>
                 <p class="text-red-500 italic text-xs">*Default Password: Nama depan dimulai huruf besar, tgl

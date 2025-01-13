@@ -32,21 +32,56 @@ class BranchResource extends Resource
         return $form
             ->schema([
                 Forms\Components\TextInput::make('name')
+                    ->label('Full Name') // Memberikan label agar lebih jelas
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->rules(['string', 'min:3']), // Validasi panjang minimal
+
+                Forms\Components\TextInput::make('phone')
+                    ->label('Phone Number')
+                    ->required()
+                    ->maxLength(15) // Batasi panjang nomor telepon
+                    ->rules(['regex:/^\+?[0-9]*$/', 'min:10']) // Validasi format nomor telepon
+
+                    ->helperText('Format: +62 atau 08 diikuti angka tanpa spasi.'), // Informasi tambahan untuk pengguna
+
+                Forms\Components\TextInput::make('email')
+                    ->label('Email Address')
+                    ->required()
+                    ->email() // Validasi format email
+                    ->maxLength(255)
+                    ->rules(['string', 'email']),
+
                 Forms\Components\TextInput::make('address')
+                    ->label('Address')
                     ->required()
-                    ->maxLength(255),
+                    ->maxLength(255)
+                    ->rules(['string', 'min:5']) // Validasi panjang minimal
+
+                    ->helperText('Masukkan alamat lengkap.'),
+
+                Forms\Components\TextInput::make('city')
+                    ->label('City')
+                    ->required()
+                    ->maxLength(100) // Panjang maksimum lebih kecil jika nama kota umumnya pendek
+                    ->rules(['string', 'min:3']),
             ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
+            ->query(
+                static::getModel()::query()->orderBy('created_at', 'desc')
+            )
             ->columns([
                 Tables\Columns\TextColumn::make('name')
                     ->searchable(),
-                Tables\Columns\TextColumn::make('address')
+                Tables\Columns\TextColumn::make('city')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('phone')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('email')
                     ->searchable(),
                 Tables\Columns\TextColumn::make('created_at')
                     ->dateTime()

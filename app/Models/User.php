@@ -28,8 +28,6 @@ class User extends Authenticatable
         'image_selfie',
         'job',
         'long_stay',
-        'amount_dp',
-        'image_dp',
         'role',
         'aggrement'
     ];

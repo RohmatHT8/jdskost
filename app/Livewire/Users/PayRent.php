@@ -28,7 +28,7 @@ class PayRent extends Component
 
     function generateInvoiceNumber()
     {
-        $prefix = 'INV';
+        $prefix = 'KWT';
         $currentYear = date('Y');
         $currentDate = date('Ymd');
 
@@ -99,6 +99,7 @@ class PayRent extends Component
         $statusPayment = Payment::join('room_payments as rp', 'rp.payment_id', '=', 'payments.id')
             ->where('rp.user_id', Auth::user()->id)
             ->where('rp.room_id', $this->room_id->id)
+            ->orderBy('payments.created_at', 'desc')
             ->pluck('status')
             ->first();
         return view('livewire.users.pay-rent', ['status' => $statusPayment]);

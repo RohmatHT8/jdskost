@@ -32,6 +32,7 @@ class Room extends Model
         $available = Room::selectRaw('
                 CASE 
                     WHEN user_rooms.room_id IS NULL THEN "available"
+                    WHEN MAX(user_rooms.status) = "out" AND MAX(user_rooms.date_out) >= NOW() THEN "in"
                     WHEN NOT MAX(user_rooms.status) = "in" THEN "available"
                     ELSE MAX(user_rooms.status)
                 END AS status

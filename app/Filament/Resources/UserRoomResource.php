@@ -71,14 +71,20 @@ class UserRoomResource extends Resource
                     }),
 
                 Forms\Components\DatePicker::make('date_in')
-                    ->label('Date In/Out')
+                    ->label('Date In')
                     ->required(),
+
+                Forms\Components\DatePicker::make('date_out')
+                    ->label('Date Out'),
             ]);
     }
 
     public static function table(Table $table): Table
     {
         return $table
+            ->query(
+                static::getModel()::query()->orderBy('created_at', 'desc')
+            )
             ->columns([
                 Tables\Columns\TextColumn::make('user.name')
                     ->label('Name')
@@ -89,6 +95,9 @@ class UserRoomResource extends Resource
                     ->sortable()
                     ->searchable(),
                 Tables\Columns\TextColumn::make('date_in')
+                    ->date()
+                    ->sortable(),
+                Tables\Columns\TextColumn::make('date_out')
                     ->date()
                     ->sortable(),
                 Tables\Columns\TextColumn::make('status'),

@@ -55,13 +55,16 @@ class Profile extends Component
         $this->showModal = false;
     }
 
-    public function close() {
+    public function close()
+    {
         return $this->showModal = false;
     }
 
     public function render()
     {
-        $detail = User::find(Auth::user()->id);
-        return view('livewire.users.profile', compact('detail'));
+        $detail = User::with('downPayments')->find(Auth::user()->id);
+        $detailArray = json_decode(json_encode($detail), true);
+        $dp = $detailArray['down_payments'][0] ?? null;
+        return view('livewire.users.profile', compact('detail', 'dp'));
     }
 }

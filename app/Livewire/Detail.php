@@ -2,6 +2,8 @@
 
 namespace App\Livewire;
 
+use App\Mail\InvoiceMail;
+use App\Mail\RejectMail;
 use App\Models\Payment;
 use App\Models\Room;
 use App\Models\RoomPayment;
@@ -16,7 +18,9 @@ use Exception;
 use Illuminate\Support\Facades\Mail;
 use NcJoes\OfficeConverter\OfficeConverter;
 use PhpOffice\PhpWord\IOFactory;
-
+use Dompdf\Dompdf;
+use Dompdf\Options;
+use PhpOffice\PhpWord\TemplateProcessor;
 
 use function Laravel\Prompts\select;
 
@@ -33,6 +37,7 @@ class Detail extends Component
     public $userId;
     public $paymentDetails;
     public $note;
+    public $name;
 
     public function mount($param = null)
     {
@@ -61,6 +66,7 @@ class Detail extends Component
                     'tf_image' => $room->latestPayment?->tf_image,
                     'status' => $room->latestPayment?->status,
                     'no' => $room->latestPayment?->no,
+                    'date' => $room->latestPayment?->date,
                     'created_at' => $room->latestPayment?->created_at,
                 ];
             });
@@ -78,169 +84,119 @@ class Detail extends Component
         $this->isHidden = '';
     }
 
-    // public function approve()
-    // {
-    //     $templatePath = storage_path('templates/Hello.odt');
-    //     $data = [
-    //         'name' => 'John Doe',
-    //         'order_id' => '12345',
-    //         'date' => date('Y-m-d'),
-    //     ];
-
-    //     include_once base_path('vendor/tinybutstrong/tinybutstrong/tbs_class.php');
-    //     include_once base_path('vendor/tinybutstrong/opentbs/tbs_plugin_opentbs.php');
-
-    //     // Inisialisasi TBS
-    //     $TBS = new clsTinyButStrong;
-    //     $TBS->Plugin(TBS_INSTALL, OPENTBS_PLUGIN);
-
-    //     // Load template DOCX
-    //     $TBS->LoadTemplate($templatePath, OPENTBS_ALREADY_UTF8);
-    //     $TBS->MergeField('name', $data['name']);
-    //     $TBS->MergeField('order_id', $data['order_id']);
-    //     $TBS->MergeField('date', $data['date']);
-
-    //     $tempFileName = md5(uniqid(rand(), true) . time());
-
-    //     $tempFile = 'print_odt/' . $tempFileName . '.odt';
-    //     $TBS->Show(OPENTBS_FILE, $tempFile);
-
-    //     dd('masih nyam,pe');
-    //     $outputtemplate = public_path($tempFile);
-    //     $converter = new OfficeConverter(
-    //         $outputtemplate,
-    //         public_path('print_odt'),
-    //         'soffice',
-    //         (strtolower(PHP_OS_FAMILY) != 'windows')
-    //     );
-    //     $converter->convertTo($tempFileName . '.pdf');
-    //     $pdfFile = public_path('print_odt/' . $tempFileName . '.pdf');
-    //     dd('sampai sini');
-    //     // Kirim email dengan PDF sebagai lampiran
-    //     // Mail::send([], [], function ($message) use ($pdfPath, $data) {
-    //     //     $message->to('rohmathidayattullah97@gmail.com')
-    //     //         ->subject('Invoice #' . $data['order_id'])
-    //     //         ->setBody('Hello ' . $data['name'] . ', your invoice is attached.')
-    //     //         ->attach($pdfPath);
-    //     // });
-
-    //     // // Hapus file sementara
-    //     // Storage::delete($docxFileName);
-    //     // Storage::delete($pdfFileName);
-
-    //     // session()->flash('message', 'File PDF berhasil dibuat dan dikirim melalui email.');
-
-    //     // $payment = Payment::create([
-    //     //     'no' => $this->payment[0]['no'],
-    //     //     'amount' => $this->payment[0]['amount'],
-    //     //     'tf_image' => $this->payment[0]['tf_image'],
-    //     //     'status' => 'approve',
-    //     //     'note' => $this->note
-    //     // ]);
-
-    //     // RoomPayment::create([
-    //     //     'room_id' => $this->room->id,
-    //     //     'payment_id' => $payment->id,
-    //     //     'user_id' => $this->userId
-    //     // ]);
-
-    //     // $this->isHidden = 'hidden';
-    //     // $this->resetModalData();
-    //     // session()->flash('message', 'Pembayaran telah di-approve!');
-    // }
-
     public function approve()
     {
         try {
-            // Path template dan direktori output
-            $templatePath = storage_path('templates/Hello.odt');
-            $outputDir = public_path('print_odt');
+            DB::beginTransaction();
+            $name = User::where('id', $this->userId)->first();
+            $payment = Payment::create([
+                'no' => $this->payment[0]['no'],
+                'amount' => $this->payment[0]['amount'],
+                'tf_image' => $this->payment[0]['tf_image'],
+                'date' => $this->payment[0]['date'],
+                'status' => 'approve',
+                'note' => $this->note
+            ]);
 
-            // Data untuk merge
+            RoomPayment::create([
+                'room_id' => $this->room->id,
+                'payment_id' => $payment->id,
+                'user_id' => $this->userId
+            ]);
+
+            // Data untuk mengisi template
             $data = [
-                'name' => 'John Doe',
-                'order_id' => '12345',
-                'date' => date('Y-m-d'),
+                'name' => $name->name,
+                'no' => $payment->no,
+                'date' => formatDateIndo($payment->created_at),
+                'recipient_name' => $name->name,
+                'room' => $this->room->number_room,
+                'description' => 'Sewa Kost ' . $this->room->id . ' ' . formatDateIndo($payment->date),
+                'price' => formatRupiah($payment->amount),
+                'total' => formatRupiah($payment->amount),
             ];
 
-            // Include library TinyButStrong dan OpenTBS
-            include_once base_path('vendor/tinybutstrong/tinybutstrong/tbs_class.php');
-            include_once base_path('vendor/tinybutstrong/opentbs/tbs_plugin_opentbs.php');
-
-            // Inisialisasi TBS
-            $TBS = new clsTinyButStrong;
-            $TBS->Plugin(TBS_INSTALL, OPENTBS_PLUGIN);
-
-            // Load template ODT
-            if (!file_exists($templatePath)) {
-                throw new Exception("Template file tidak ditemukan: $templatePath");
+            // Path ke logo
+            $imagePath = public_path('logo.png');
+            if (!file_exists($imagePath)) {
+                throw new \Exception("Logo tidak ditemukan di path: $imagePath");
             }
 
-            $TBS->LoadTemplate($templatePath, OPENTBS_ALREADY_UTF8);
-            $TBS->MergeField('name', $data['name']);
-            $TBS->MergeField('order_id', $data['order_id']);
-            $TBS->MergeField('date', $data['date']);
+            // Encode gambar ke Base64
+            $data['base64Logo'] = base64_encode(file_get_contents($imagePath));
 
-            // Generate file sementara ODT
-            if (!is_dir($outputDir)) {
-                mkdir($outputDir, 0755, true);
+            // Render Blade View sebagai HTML
+            $htmlContent = view('templates.invoice', $data)->render();
+
+            // Konfigurasi Dompdf
+            $options = new Options();
+            $options->set('defaultFont', 'DejaVu Sans');
+            $dompdf = new Dompdf($options);
+
+            // Muat HTML ke Dompdf
+            $dompdf->loadHtml($htmlContent);
+            $dompdf->setPaper('A4', 'portrait');
+            $dompdf->render();
+
+            // Simpan PDF ke file
+            $pdfOutputDir = public_path('print_pdfs');
+            if (!is_dir($pdfOutputDir)) {
+                mkdir($pdfOutputDir, 0755, true);
             }
 
-            $tempFileName = md5(uniqid(rand(), true) . time());
-            $tempOdtFile = $outputDir . '/' . $tempFileName . '.odt';
-            $TBS->Show(OPENTBS_FILE, $tempOdtFile);
+            $pdfFilePath = $pdfOutputDir . '/' . uniqid('document_') . '.pdf';
+            file_put_contents($pdfFilePath, $dompdf->output());
 
-            if (!file_exists($tempOdtFile)) {
-                throw new Exception("Gagal membuat file ODT.");
-            }
+            // Kirim email dengan Mailtrap
+            Mail::to($name->email)->send(new InvoiceMail($data, $pdfFilePath));
 
-            // Konversi ODT ke PDF
-            $tempPdfFile = $outputDir . '/' . $tempFileName . '.pdf';
-            $libreOfficePath = 'soffice'; // Pastikan path LibreOffice sudah ditambahkan ke PATH
-
-            $command = escapeshellcmd("$libreOfficePath --headless --convert-to pdf --outdir " . escapeshellarg($outputDir) . " " . escapeshellarg($tempOdtFile));
-            $output = [];
-            $returnCode = 0;
-
-            exec($command, $output, $returnCode);
-
-            if ($returnCode !== 0 || !file_exists($tempPdfFile)) {
-                throw new Exception("Gagal mengonversi ODT ke PDF. Output: " . implode("\n", $output));
-            }
-
-            // Hapus file ODT jika tidak diperlukan lagi
-            unlink($tempOdtFile);
-
-            // Flash message sukses
-            session()->flash('success', 'Dokumen berhasil dibuat dan dikonversi ke PDF.');
-
-            return response()->download($tempPdfFile)->deleteFileAfterSend(true);
-        } catch (Exception $e) {
-            // Flash message error
-            session()->flash('error', $e->getMessage());
-
-            return redirect()->back();
+            // Kembalikan file PDF ke browser
+            DB::commit();
+            $this->closeModal();
+            session()->flash('message', 'Pembayaran telah disetujui');
+            return response()->download($pdfFilePath)->deleteFileAfterSend(true);
+        } catch (\Exception $e) {
+            DB::rollBack();
+            dd($e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
         }
     }
 
+
     public function reject()
     {
-        $payment = Payment::create([
-            'no' => $this->payment[0]['no'],
-            'amount' => $this->payment[0]['amount'],
-            'tf_image' => $this->payment[0]['tf_image'],
-            'status' => 'rejected',
-            'note' => $this->note
-        ]);
+        try {
+            DB::beginTransaction();
+            $name = User::where('id', $this->userId)->first();
+            
+            $payment = Payment::create([
+                'no' => $this->payment[0]['no'],
+                'amount' => $this->payment[0]['amount'],
+                'tf_image' => $this->payment[0]['tf_image'],
+                'status' => 'rejected',
+                'note' => $this->note,
+                'date' => $this->payment[0]['date']
+            ]);
+    
+            RoomPayment::create([
+                'room_id' => $this->room->id,
+                'payment_id' => $payment->id,
+                'user_id' => $this->userId
+            ]);
 
-        RoomPayment::create([
-            'room_id' => $this->room->id,
-            'payment_id' => $payment->id,
-            'user_id' => $this->userId
-        ]);
-
-        $this->closeModal();
-        session()->flash('message', 'Pembayaran telah ditolak!');
+            $data=[];
+            $data['name'] = $name->name;
+            $data['note'] = $this->note;
+            $data['date'] = $this->payment[0]['date'];
+            Mail::to($name->email)->send(new RejectMail($data));    
+            $this->closeModal();
+            DB::commit();
+            session()->flash('message-reject', 'Pembayaran telah ditolak!');
+        } catch (\Exception $e) {
+            DB::rollBack();
+            dd($e->getMessage());
+            return redirect()->back()->with('error', 'Terjadi kesalahan: ' . $e->getMessage());
+        }
     }
 
     public function closeModal()
@@ -273,11 +229,12 @@ class Detail extends Component
 
     public function render()
     {
+        $roomStatus = [];
         if ($this->userId) {
             $this->userId = DB::table('user_rooms')
                 ->select(DB::raw("
                    CASE 
-                       WHEN NOT status = 'in' THEN NULL
+                       WHEN NOT status = 'in' THEN user_id
                        ELSE user_id
                    END AS result
                "))
@@ -285,6 +242,7 @@ class Detail extends Component
                 ->orderBy('created_at', 'desc')
                 ->limit(1)
                 ->value('user_id');
+            $roomStatus = Room::join('user_rooms as ur', 'ur.room_id', '=', 'rooms.id')->where('rooms.id', $this->param)->where('ur.user_id', $this->userId)->select('rooms.*')->first();
         }
         $this->paymentDetails = DB::table('room_payments as rp')
             ->join('payments as p', 'p.id', '=', 'rp.payment_id')
@@ -330,7 +288,7 @@ class Detail extends Component
             ->orderBy('ur.created_at', 'desc')
             ->limit(1)
             ->first();
-        $roomStatus = Room::join('user_rooms as ur', 'ur.room_id', '=', 'rooms.id')->where('rooms.id', $this->param)->where('ur.user_id', $this->userId)->get()->first();
+
         return view('livewire.detail', ['roomView' => $this->room, 'paymentDetails' => $this->paymentDetails, 'userDetailView' => $this->userDetail, 'userSelect' => $this->userSelect, 'roomStatus' => $roomStatus]);
     }
 }

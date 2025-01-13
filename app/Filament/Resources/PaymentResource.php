@@ -47,6 +47,9 @@ class PaymentResource extends Resource
     public static function table(Table $table): Table
     {
         return $table
+            ->query(
+                static::getModel()::query()->orderBy('created_at', 'desc')
+            )
             ->columns([
                 Tables\Columns\TextColumn::make('no')
                     ->searchable(),
