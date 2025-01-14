@@ -378,6 +378,32 @@
                                     @enderror
                                 </div>
                                 <!-- End Form Group -->
+
+                                <!-- Form Group -->
+                                <div>
+                                    <label for="no_rek" class="block text-sm mb-2">No. Rek pengembalian DP <span
+                                            class="text-red-600">*</span></label>
+                                    <div class="relative">
+                                        <input wire:model="no_rek" type="text" id="no_rek" name="no_rek"
+                                            class="form" placeholder="BCA 290xxx a/n User"
+                                            aria-describedby="no_rek-error">
+                                        @error('no_rek')
+                                            <div
+                                                class="absolute inset-y-0 end-0 flex items-center pointer-events-none pe-3">
+                                                <svg class="h-5 w-5 text-red-500" width="16" height="16"
+                                                    fill="currentColor" viewBox="0 0 16 16" aria-hidden="true">
+                                                    <path
+                                                        d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zM8 4a.905.905 0 0 0-.9.995l.35 3.507a.552.552 0 0 0 1.1 0l.35-3.507A.905.905 0 0 0 8 4zm.002 6a1 1 0 1 0 0 2 1 1 0 0 0 0-2z" />
+                                                </svg>
+                                            </div>
+                                        @enderror
+                                    </div>
+                                    @error('no_rek')
+                                        <p class="text-xs text-red-600 mt-2" id="email-error">{{ $message }}</p>
+                                    @enderror
+                                </div>
+                                <!-- End Form Group -->
+
                                 <div class="p-2 flex justify-start items-start gap-2 border">
                                     <input wire:model="aggrement" type="checkbox" id="aggrement" name="aggrement"
                                         class="mt-1" aria-describedby="aggrement-error">

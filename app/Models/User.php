@@ -29,6 +29,7 @@ class User extends Authenticatable
         'job',
         'long_stay',
         'role',
+        'no_rek',
         'aggrement'
     ];
 

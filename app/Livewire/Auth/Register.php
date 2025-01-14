@@ -33,6 +33,7 @@ class Register extends Component
     public $image_dp;
     public $role = 'user';
     public $room_id;
+    public $no_rek;
     public $status;
     public $branch_id;
     public $date_in;
@@ -58,6 +59,7 @@ class Register extends Component
             'status' => 'required|string',
             'branch_id' => 'required|integer',
             'date_in' => 'required|string',
+            'no_rek' => 'required|string',
             'aggrement' => 'accepted'
         ]);
         try {
@@ -83,6 +85,7 @@ class Register extends Component
                 'long_stay' => $this->long_stay,
                 'role' => $this->role,
                 'aggrement' => $this->aggrement,
+                'no_rek' => $this->no_rek,
             ]);
 
             DownPayment::create([

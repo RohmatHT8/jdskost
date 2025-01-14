@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('image_selfie');
             $table->string('job');
             $table->string('long_stay');
+            $table->string('no_rek');
             $table->enum('role', ['admin', 'user']);
             $table->enum('aggrement', [true, false]);
             $table->rememberToken();

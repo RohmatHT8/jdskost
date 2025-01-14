@@ -24,6 +24,7 @@ class UserSeeder extends Seeder
                 'job' => 'Software Engineer',
                 'long_stay' => '6 Bulan',
                 'role' => 'admin',
+                'no_rek' => '_xxxx_',
                 'remember_token' => Str::random(10),
                 'created_at' => now(),
                 'updated_at' => now(),

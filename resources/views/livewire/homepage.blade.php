@@ -363,39 +363,84 @@
                 <a href='/out-room'
                     class='w-full py-5 bg-slate-200 px-3 flex flex-col justify-center items-center hover:bg-slate-300 hover:shadow-lg cursor-pointer transition-all'>
                     <img src="{{ asset('assets/keluar-kamar.png') }}" alt="keluar-kamar" class='max-w-32' />
-                    <p class="text-gray-700 font-bold">Keluar Kamar</p>
+                    <p class="text-gray-700 font-bold">Check Out</p>
                 </a>
             </div>
             <div class="px-5 md:px-20 lg:px-32 mt-3 mb-10">
-                <div class="border px-3 py-2 bg-gray-700">
-                    <h1 class="text-white font-bold text-lg mb-3">Syarat dan Ketentuan</h1>
-                    <div class="flex gap-2 text-sm mb-2 text-slate-700">
-                        <div class="bg-yellow-300 font-bold rounded-full flex justify-center items-center flex-none"
-                            style="height: 40px; width: 40px;">
-                            <p>1</p>
+                <div class="border px-3 py-2 bg-gray-700 md:grid md:grid-cols-3">
+                    <div class="md:col-span-2 md:pr-3">
+                        <h1 class="text-white font-bold text-lg mb-3">TATA TERTIB JDS KOST</h1>
+                        <div class="flex gap-2 text-sm mb-2 text-slate-700">
+                            <div class="bg-yellow-300 font-bold rounded-full flex justify-center items-center flex-none"
+                                style="height: 25px; width: 25px;">
+                                <p>1</p>
+                            </div>
+                            <div class="text-slate-300">
+                                <p>Standard dan deluxe hanya untuk 1 orang, Executive maks 2 orang.</p>
+                            </div>
                         </div>
-                        <div class="text-slate-300">
-                            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Quisquam, modi adipisci
-                                consequatur
-                                labore asperiores commodi eligendi fuga id ratione vitae voluptatem cupiditate voluptas!
-                                Non
-                                inventore ad ab corrupti consectetur qui blanditiis veniam praesentium id repudiandae
-                                tenetur explicabo.</p>
+                        <div class="flex gap-2 text-sm mb-2 text-slate-700">
+                            <div class="bg-yellow-300 font-bold rounded-full flex justify-center items-center flex-none"
+                                style="height: 25px; width: 25px;">
+                                <p class="text-slate-600">2</p>
+                            </div>
+                            <div>
+                                <p class="text-slate-300">Simpan dan jaga barang pribadi dengan baik. Kehilangan barang
+                                    menjadi tangung jawab pribadi penghuni.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-2 text-sm mb-2 text-slate-700">
+                            <div class="bg-yellow-300 font-bold rounded-full flex justify-center items-center flex-none"
+                                style="height: 25px; width: 25px;">
+                                <p class="text-slate-600">3</p>
+                            </div>
+                            <div>
+                                <p class="text-slate-300">dilarang melakukan hal-hal yang bertentangan dengan norma
+                                    hukum.</p>
+                            </div>
+                        </div>
+                        <div class="flex gap-2 text-sm mb-2 text-slate-700">
+                            <div class="bg-yellow-300 font-bold rounded-full flex justify-center items-center flex-none"
+                                style="height: 25px; width: 25px;">
+                                <p class="text-slate-600">4</p>
+                            </div>
+                            <div>
+                                <p class="text-slate-300">jaga ketertiban umum dan kenyamanan Bersama, saling
+                                    menghormati dan menghargai sesama penghuni JDS Kost Kelapa Gading</p>
+                            </div>
                         </div>
                     </div>
-                    <div class="flex gap-2 text-sm mb-2 text-slate-700">
-                        <div class="bg-yellow-300 font-bold rounded-full flex justify-center items-center flex-none"
-                            style="height: 40px; width: 40px;">
-                            <p class="text-slate-600">2</p>
+                    <div class="md:col-span-1">
+                        <h1 class="text-white font-bold text-lg mb-3">Penggunaan Fasilitas Bersama</h1>
+                        <div class="flex gap-2 text-sm mb-2 text-slate-700">
+                            <div class="bg-yellow-300 font-bold rounded-full flex justify-center items-center flex-none"
+                                style="height: 25px; width: 25px;">
+                                <p>1</p>
+                            </div>
+                            <div class="text-slate-300">
+                                <p>penghuni wajib mennjaga seluruh fasilitas kost yang ada.</p>
+                            </div>
                         </div>
-                        <div>
-                            <p class="text-slate-300">Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                                Quisquam, modi adipisci
-                                consequatur
-                                labore asperiores commodi eligendi fuga id ratione vitae voluptatem cupiditate voluptas!
-                                Non
-                                inventore ad ab corrupti consectetur qui blanditiis veniam praesentium id repudiandae
-                                tenetur explicabo .</p>
+                        <div class="flex gap-2 text-sm mb-2 text-slate-700">
+                            <div class="bg-yellow-300 font-bold rounded-full flex justify-center items-center flex-none"
+                                style="height: 25px; width: 25px;">
+                                <p class="text-slate-600">2</p>
+                            </div>
+                            <div>
+                                <p class="text-slate-300">harap memeriksa Kembali KOMPOR GAS setelah penggunaan
+                                </p>
+                            </div>
+                        </div>
+                        <div class="flex gap-2 text-sm mb-2 text-slate-700">
+                            <div class="bg-yellow-300 font-bold rounded-full flex justify-center items-center flex-none"
+                                style="height: 25px; width: 25px;">
+                                <p class="text-slate-600">3</p>
+                            </div>
+                            <div>
+                                <p class="text-slate-300">penghuni harap mematikan penggunaan elektronik dan air jika
+                                    tidak digunakan.
+                                </p>
+                            </div>
                         </div>
                     </div>
                 </div>
