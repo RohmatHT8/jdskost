@@ -340,6 +340,7 @@
                     ({{ $detail[0]->status }}) {{ $detail[0]->date_out }}</p>
                 <p class="text-xs font-semibold text-slate-300 md:text-base">Tenggat waktu bayar setiap tanggal
                     {{ $detail[0]->anual_payment }}</p>
+                <p class="text-xs font-semibold text-slate-300 md:text-base">Bayar sewa ke rek. 6340118535 BCA a/n Edwin Setiadi</p>
                 <p class="text-xs font-semibold text-slate-300 md:text-base italic">Biaya sewa perbulan
                     {{ formatRupiah($detail[0]->price) }}</p>
             </div>
