@@ -37,7 +37,7 @@
                     class="w-full py-3 px-4 inline-flex justify-center items-center gap-x-2 text-sm font-semibold border border-transparent bg-primary-0 text-white hover:bg-lightPrimary-0 disabled:opacity-50 disabled:pointer-events-none dark:focus:outline-none dark:focus:ring-1 dark:focus:ring-gray-600 mt-3">Send</button>
             </form>
         @else
-            <div class="text-slate-600 font-semibold italic">Tanggal pengajuan keluar sudah terkirim, pengembalian DP
+            <div class="text-slate-600 font-semibold italic">Tanggal pengajuan keluar sudah terkirim, pengembalian deposit
                 sedang diproses ke {{ $norek }}</div>
         @endif
     </div>
@@ -50,7 +50,7 @@
                     <p>1</p>
                 </div>
                 <div class="text-slate-300">
-                    <p>deposit fee digunakan sebagai jaminan dan akan dikembalikan setelah check out clear.</p>
+                    <p>Deposit fee digunakan sebagai jaminan dan akan dikembalikan setelah check out clear.</p>
                 </div>
             </div>
             <div class="flex gap-2 text-sm mb-2 text-slate-700">
@@ -59,7 +59,7 @@
                     <p class="text-slate-600">2</p>
                 </div>
                 <div>
-                    <p class="text-slate-300">deposit akan dipotong jika ada kerusakan fasilitas atau kehilangan kartu akses.
+                    <p class="text-slate-300">Deposit akan dipotong jika ada kerusakan fasilitas atau kehilangan kartu akses.
                     </p>
                 </div>
             </div>
@@ -69,7 +69,7 @@
                     <p class="text-slate-600">3</p>
                 </div>
                 <div>
-                    <p class="text-slate-300 italic">Check out mendadak = Deposit Hangus.
+                    <p class="text-slate-300 italic">Informasi checkout 2 minggu sebelum. Check out mendadak = Deposit Hangus.
                     </p>
                 </div>
             </div>

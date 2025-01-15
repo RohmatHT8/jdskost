@@ -332,11 +332,11 @@
 
                                 <!-- Form Group -->
                                 <div>
-                                    <label for="amount_dp" class="block text-sm mb-2">Jumlah Dp <span
+                                    <label for="amount_dp" class="block text-sm mb-2">Jumlah Deposit <span
                                             class="text-red-600">*</span></label>
                                     <div class="relative">
                                         <input wire:model="amount_dp" type="number" id="amount_dp" name="amount_dp"
-                                            class="form" placeholder="Jumlah DP"
+                                            class="form" placeholder="Jumlah Deposit"
                                             aria-describedby="amount_dp-error">
                                         @error('amount_dp')
                                             <div
@@ -381,7 +381,7 @@
 
                                 <!-- Form Group -->
                                 <div>
-                                    <label for="no_rek" class="block text-sm mb-2">No. Rek pengembalian DP <span
+                                    <label for="no_rek" class="block text-sm mb-2">No. Rek pengembalian Deposit <span
                                             class="text-red-600">*</span></label>
                                     <div class="relative">
                                         <input wire:model="no_rek" type="text" id="no_rek" name="no_rek"
@@ -427,30 +427,3 @@
         </div>
     </div>
 </section>
-
-<script>
-    // document.getElementById('image_ktp').addEventListener('change', function(event) {
-    //     const file = event.target.files[0];
-    //     if (file) {
-    //         const formData = new FormData();
-    //         formData.append('image', file);
-
-    //         axios.post('/upload-image', formData, {
-    //                 headers: {
-    //                     'Content-Type': 'multipart/form-data',
-    //                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
-    //                 }
-    //             })
-    //             .then(response => {
-    //                 if (response.data.status === 'success') {
-    //                     document.getElementById('statusMessage').innerHTML +=
-    //                     `<div class="w-full flex justify-center p-2 border border-dotted mt-2" ><img src="${response.data.file_name}" class="w-[20%]" /></div>`
-    //                 }
-    //             })
-    //             .catch(error => {
-    //                 console.error('Error uploading image:', error);
-    //                 document.getElementById('statusMessage').innerText = 'Failed to upload image.';
-    //             });
-    //     }
-    // });
-</script>

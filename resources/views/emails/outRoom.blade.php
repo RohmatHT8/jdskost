@@ -13,7 +13,7 @@
         <p>Nama : <b>{{ $data['name'] }}</b></p>
         <p>Email : <b>{{ $data['email'] }}</b></p>
         <p>No. Rekening : <b>{{ $data['no_rek'] }}</b></p>
-        <p>Jumlah DP : <b>{{ formatRupiah($data['amount_dp']) }}</b></p>
+        <p>Jumlah Deposit : <b>{{ formatRupiah($data['amount_dp']) }}</b></p>
         <p>Tanggal Masuk : <b>{{ formatDateIndo($data['date_in']) }}</b></p>
         <p>Lama Tinggal : <b>{{ $data['long_stay'] }}</b></p>
         <p>Tanggal Keluar : <b>{{ formatDateIndo($data['date']) }}</b></p>

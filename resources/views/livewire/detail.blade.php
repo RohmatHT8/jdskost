@@ -189,7 +189,7 @@
                                     <td class="font-semibold">{{ $userDetailView->job }}</td>
                                 </tr>
                                 <tr>
-                                    <td class="py-1">DP</td>
+                                    <td class="py-1">Deposit</td>
                                     <td class="font-semibold">
                                         {{ Number::currency($userDetailView->amount_dp, 'IDR') }}
                                     </td>
