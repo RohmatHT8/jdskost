@@ -377,7 +377,7 @@
                                 <p>1</p>
                             </div>
                             <div class="text-slate-300">
-                                <p>Standard dan deluxe hanya untuk 1 orang, Executive maks 2 orang.</p>
+                                <p>Standard dan deluxe hanya untuk 1 orang, executive maks 2 orang.</p>
                             </div>
                         </div>
                         <div class="flex gap-2 text-sm mb-2 text-slate-700">
@@ -396,7 +396,7 @@
                                 <p class="text-slate-600">3</p>
                             </div>
                             <div>
-                                <p class="text-slate-300">dilarang melakukan hal-hal yang bertentangan dengan norma
+                                <p class="text-slate-300">Dilarang melakukan hal-hal yang bertentangan dengan norma
                                     hukum.</p>
                             </div>
                         </div>
@@ -406,7 +406,7 @@
                                 <p class="text-slate-600">4</p>
                             </div>
                             <div>
-                                <p class="text-slate-300">jaga ketertiban umum dan kenyamanan Bersama, saling
+                                <p class="text-slate-300">Jaga ketertiban umum dan kenyamanan bersama, saling
                                     menghormati dan menghargai sesama penghuni JDS Kost Kelapa Gading</p>
                             </div>
                         </div>
@@ -419,7 +419,7 @@
                                 <p>1</p>
                             </div>
                             <div class="text-slate-300">
-                                <p>penghuni wajib mennjaga seluruh fasilitas kost yang ada.</p>
+                                <p>Penghuni wajib mennjaga seluruh fasilitas kost yang ada.</p>
                             </div>
                         </div>
                         <div class="flex gap-2 text-sm mb-2 text-slate-700">
@@ -428,7 +428,7 @@
                                 <p class="text-slate-600">2</p>
                             </div>
                             <div>
-                                <p class="text-slate-300">harap memeriksa Kembali KOMPOR GAS setelah penggunaan
+                                <p class="text-slate-300">Harap memeriksa kembali kompor gas setelah penggunaan
                                 </p>
                             </div>
                         </div>
@@ -438,7 +438,7 @@
                                 <p class="text-slate-600">3</p>
                             </div>
                             <div>
-                                <p class="text-slate-300">penghuni harap mematikan penggunaan elektronik dan air jika
+                                <p class="text-slate-300">Penghuni harap mematikan penggunaan elektronik dan air jika
                                     tidak digunakan.
                                 </p>
                             </div>

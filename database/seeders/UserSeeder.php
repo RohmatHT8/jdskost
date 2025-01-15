@@ -33,7 +33,7 @@ class UserSeeder extends Seeder
                 'name' => 'Admin JDS Kost',
                 'email' => 'adm.jdskost@gmail.com',
                 'email_verified_at' => now(),
-                'password' => Hash::make('Jdskost289191@2025'),
+                'password' => Hash::make('Jdskost@2025!'),
                 'image_ktp' => 'path/to/ktp_image.jpg',
                 'phone_number' => '081234567890',
                 'emergency_phone' => 'Asep (081234567891)',
